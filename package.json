@@ -1,0 +1,39 @@
+{
+  "name": "vite-plugin-banner",
+  "version": "0.1.1",
+  "description": "A banner plugin for Vite.",
+  "main": "dist/vite-plugin-banner.min.js",
+  "types": "vite-plugin-banner.d.ts",
+  "scripts": {
+    "build": "rollup -c rollup.config.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chengpeiquan/vite-plugin-banner.git"
+  },
+  "keywords": [
+    "vite插件",
+    "vite plugin",
+    "vite banner"
+  ],
+  "author": "chengpeiquan",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-typescript": "^7.10.4",
+    "@rollup/plugin-babel": "^5.2.0",
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@types/babel__core": "^7.1.9",
+    "rollup": "^2.26.4",
+    "rollup-plugin-banner2": "^1.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "rollup-plugin-typescript2": "^0.27.2",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.2",
+    "vite": "^2.0.2"
+  }
+}
