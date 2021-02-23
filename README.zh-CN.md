@@ -8,27 +8,27 @@
   </a>
 </p>
 
-English | [简体中文](https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.zh-CN.md)
+[English](https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.md) | 简体中文
 
-## Features
+## 功能
 
-Adds a banner to the top of each generated chunk.
+为每个 chunk 文件头部添加 banner 注释。
 
-## Usage
+## 用法
 
-> ℹ️ **Only support for Vite 2.**
+> ℹ️ **只支持 Vite 2.**
 
-### Install
+### 安装
 
-Install the package from npm (or yarn).
+从 npm (或者 yarn) 安装：
 
 ```bash
 npm install --save-dev vite-plugin-banner
 ```
 
-### Basic usage
+### 基础用法
 
-Add it to `vite.config.ts`
+在 `vite.config.ts` 添加：
 
 ```ts
 // vite.config.ts
@@ -42,20 +42,20 @@ export default defineConfig({
 })
 ```
 
-When you run `npm run build` on your project, In the `dist` folder(Or the [build.outDir](https://vitejs.dev/config/#build-outdir) in `vite.config.ts` you configured), Except for `vendor` files, all `js` and `css` files will add a banner to the top.
+当你在你的项目上运行 `npm run build` 打包的时候，在 `dist` 文件夹（或者你在 `vite.config.ts` 配置的其他 [build.outDir](https://vitejs.dev/config/#build-outdir) ），除了 `vendor` 文件外，所有的 `js` 和 `css` 文件都会添加一个 banner 注释在文件顶部。
 
-e.g. in `app.b3a7772e.js`:
+例如，在生成的 `app.b3a7772e.js` 里:
 
 ```js
 /* This is the Banner content. */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
 
-### Advanced usage
+### 高级用法
 
-Of course, the most ideal banner is related to your package information.
+当然，最理想的 banner 注释是和你的项目信息相关联。
 
-First, You need to update your `package.json` like this, For example, it contains such field content:
+首先，你需要更新你的 `package.json` 文件，像这样，包含类似的字段内容：
 
 ```json
 // package.json
@@ -68,7 +68,7 @@ First, You need to update your `package.json` like this, For example, it contain
 }
 ```
 
-Then, import the `package.json` into `vite.config.ts`, update the banner like this:
+然后，在你的 `vite.config.ts` 导入 `package.json`，像这样更新 banner 插件的内容：
 
 ```ts
 // vite.config.ts
@@ -82,9 +82,9 @@ export default defineConfig({
 })
 ```
 
-Run `npm run build`, you can see the banner become more detailed.
+运行 `npm run build` 打包, 你可以看到生成出来的 banner 注释更详细：
 
-e.g. in `app.b3a7772e.js`:
+例如，在生成的 `app.b3a7772e.js` 里:
 
 ```js
 /**
@@ -97,11 +97,11 @@ e.g. in `app.b3a7772e.js`:
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
 
-### Fun usage
+### 趣味用法
 
-If you want to make some banners that show your personality, you can make some interesting content from some online generators.
+如果你想制作一些个性化的 banner 注释，像什么表白啊、佛系啊、招聘信息啊什么的，可以通过一些在线生成器去制作有趣的内容。
 
-Such as:
+比如在这些网站上可以直接生成:
 
 - [http://www.network-science.de/ascii/](http://www.network-science.de/ascii/)
 
@@ -125,7 +125,7 @@ export default defineConfig({
 })
 ```
 
-Run `npm run build`,  e.g. in `app.d9a287b8.js`:
+执行 `npm run build` 打包,  还是在 `app.d9a287b8.js` ，现在变成了：
 
 ```js
 /* 
