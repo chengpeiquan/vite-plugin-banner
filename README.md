@@ -8,7 +8,7 @@ Adds a banner to the top of each generated chunk.
 
 ## Usage
 
-> ℹ️ **Only support Vite 2.**
+> ℹ️ **Only support for Vite 2.**
 
 ### Install
 
@@ -47,7 +47,7 @@ var e=Object.assign;import{M as t,d as a,u as r,c......
 
 Of course, the most ideal banner is related to your package information.
 
-First, You need to update your `package.json` like this:
+First, You need to update your `package.json` like this, For example, it contains such field content:
 
 ```json
 // package.json
@@ -56,12 +56,11 @@ First, You need to update your `package.json` like this:
   "version": "0.1.0",
   "description": "My personal website, technology stack based on Vue.js 3.0, and Vite 2.0, use Server Side Generation.",
   "author": "chengpeiquan",
-  "homepage": "https://chengpeiquan.com/",
-  // and so on.
+  "homepage": "https://chengpeiquan.com/"
 }
 ```
 
-Then, in `vite.config.ts`, update the banner like this:
+Then, import the `package.json` into `vite.config.ts`, update the banner like this:
 
 ```ts
 // vite.config.ts
