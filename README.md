@@ -1,5 +1,7 @@
 # vite-plugin-banner
 
+![vite-plugin-banner](https://cdn.jsdelivr.net/gh/chengpeiquan/assets-storage/img/2021/02/20210224004140.jpg)
+
 A banner plugin for Vite.
 
 ## Features
@@ -34,7 +36,7 @@ export default defineConfig({
 })
 ```
 
-When you run `npm run build` on your project, In the `dist` folder, Except for `vendor` files, all `js` and `css` files will add a banner to the top.
+When you run `npm run build` on your project, In the `dist` folder(Or the [build.outDir](https://vitejs.dev/config/#build-outdir) in `vite.config.ts` you configured), Except for `vendor` files, all `js` and `css` files will add a banner to the top.
 
 e.g. in `app.b3a7772e.js`:
 
