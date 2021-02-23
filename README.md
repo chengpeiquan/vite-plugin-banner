@@ -88,3 +88,53 @@ e.g. in `app.b3a7772e.js`:
  */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
+
+### Fun usage
+
+If you want to make some banners that show your personality, you can make some interesting content from some online generators.
+
+Such as:
+
+- [http://www.network-science.de/ascii/](http://www.network-science.de/ascii/)
+
+- [https://www.bootschool.net/ascii](https://www.bootschool.net/ascii)
+
+```ts
+// vite.config.ts
+export default defineConfig({
+  plugins: [
+    Banner(`
+    ██   ██         ███████   ██      ██ ████████   ██    ██   ███████   ██     ██
+    ░██  ░██        ██░░░░░██ ░██     ░██░██░░░░░   ░░██  ██   ██░░░░░██ ░██    ░██
+    ░██  ░██       ██     ░░██░██     ░██░██         ░░████   ██     ░░██░██    ░██
+    ░██  ░██      ░██      ░██░░██    ██ ░███████     ░░██   ░██      ░██░██    ░██
+    ░██  ░██      ░██      ░██ ░░██  ██  ░██░░░░       ░██   ░██      ░██░██    ░██
+    ░██  ░██      ░░██     ██   ░░████   ░██           ░██   ░░██     ██ ░██    ░██
+    ░██  ░████████ ░░███████     ░░██    ░████████     ░██    ░░███████  ░░███████ 
+    ░░   ░░░░░░░░   ░░░░░░░       ░░     ░░░░░░░░      ░░      ░░░░░░░    ░░░░░░░  
+    `)
+  ]
+})
+```
+
+Run `npm run build`,  e.g. in `app.d9a287b8.js`:
+
+```js
+/* 
+    ██   ██         ███████   ██      ██ ████████   ██    ██   ███████   ██     ██
+    ░██  ░██        ██░░░░░██ ░██     ░██░██░░░░░   ░░██  ██   ██░░░░░██ ░██    ░██
+    ░██  ░██       ██     ░░██░██     ░██░██         ░░████   ██     ░░██░██    ░██
+    ░██  ░██      ░██      ░██░░██    ██ ░███████     ░░██   ░██      ░██░██    ░██
+    ░██  ░██      ░██      ░██ ░░██  ██  ░██░░░░       ░██   ░██      ░██░██    ░██
+    ░██  ░██      ░░██     ██   ░░████   ░██           ░██   ░░██     ██ ░██    ░██
+    ░██  ░████████ ░░███████     ░░██    ░████████     ░██    ░░███████  ░░███████ 
+    ░░   ░░░░░░░░   ░░░░░░░       ░░     ░░░░░░░░      ░░      ░░░░░░░    ░░░░░░░  
+     */
+var e=Object.assign;import{M as t,d as a,u as r,c......
+```
+
+## License
+
+MIT License © 2021 [chengpeiquan](https://github.com/chengpeiquan)
+
+
