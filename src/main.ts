@@ -1,6 +1,7 @@
 import fs from 'fs'
 import { resolve } from 'path'
 import type { Plugin, ResolvedConfig } from 'vite'
+import checkComment from './checkComment'
 
 // 来自vite.config.ts的配置继承
 let viteConfig: ResolvedConfig;
@@ -16,14 +17,11 @@ const excludeRegexp: RegExp = new RegExp(/vendor/);
  * @param {string} comment - 注释的内容，可以包含注释符号，也可以只传内容
  */
 const banner = (comment: string): Plugin | unknown => {
-  // 注释符不成对的时候，需要报错
-  // if (
-  //   (comment.includes('/*') && !comment.includes('*/'))
-  //   ||
-  //   (!comment.includes('/*') && comment.includes('*/'))
-  // ) {
-  //   throw new Error('[vite-plugin-banner] If you want to pass in comment symbols, you must pass them in pairs.');
-  // }
+  // 校验传入的注释内容合法性
+  const error: string = checkComment(comment);
+  if ( error ) {
+    throw new Error(`[vite-plugin-banner] ${error}`);
+  }
 
   // 处理文件
   return {
@@ -43,7 +41,7 @@ const banner = (comment: string): Plugin | unknown => {
         if ( includeRegexp.test(fileName) && !excludeRegexp.test(fileName) ) {
           try {
             // 读取文件内容
-            let data: unknown = fs.readFileSync(filePath, {
+            let data: string = fs.readFileSync(filePath, {
               encoding: 'utf8'
             })
 

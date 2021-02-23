@@ -1,6 +1,6 @@
 /** 
  * name: vite-plugin-banner
- * version: v0.1.0
+ * version: v0.1.1
  * author: chengpeiquan
  */
  'use strict';
@@ -166,29 +166,49 @@ function __generator(thisArg, body) {
   }
 }
 
+var checkComment = function (comment) {
+    if (typeof comment !== 'string') {
+        return 'The comment must be a string.';
+    }
+    if (!comment) {
+        return 'The comment can not be empty.';
+    }
+    if ((comment.includes('/*') && !comment.includes('*/'))
+        ||
+            (!comment.includes('/*') && comment.includes('*/'))) {
+        return 'If you want to pass in comment symbols, you must pass them in pairs.';
+    }
+    return '';
+};
+
 var viteConfig;
+var includeRegexp = new RegExp(/\.(css|js)$/i);
+var excludeRegexp = new RegExp(/vendor/);
 var banner = function (comment) {
+    var error = checkComment(comment);
+    if (error) {
+        throw new Error("[vite-plugin-banner] " + error);
+    }
     return {
         name: 'banner',
-        configResolved: function (config) {
-            viteConfig = config;
+        configResolved: function (resolvedConfig) {
+            viteConfig = resolvedConfig;
         },
         writeBundle: function (options, bundle) {
             return __awaiter(this, void 0, void 0, function () {
-                var _i, _a, file, root, outDir, fileName, filePath, extRegex, vendorRegex, data;
+                var _i, _a, file, root, outDir, fileName, filePath, data;
                 return __generator(this, function (_b) {
                     for (_i = 0, _a = Object.entries(bundle); _i < _a.length; _i++) {
                         file = _a[_i];
-                        try {
-                            root = viteConfig.root;
-                            outDir = viteConfig.build.outDir || 'dist';
-                            fileName = file[0];
-                            filePath = path.resolve(root, outDir, fileName);
-                            console.log(filePath);
-                            extRegex = new RegExp(/\.(css|js)$/i);
-                            vendorRegex = new RegExp(/vendor/);
-                            if (extRegex.test(fileName) && !vendorRegex.test(fileName)) {
-                                data = fs__default['default'].readFileSync(filePath, { encoding: 'utf8' });
+                        root = viteConfig.root;
+                        outDir = viteConfig.build.outDir || 'dist';
+                        fileName = file[0];
+                        filePath = path.resolve(root, outDir, fileName);
+                        if (includeRegexp.test(fileName) && !excludeRegexp.test(fileName)) {
+                            try {
+                                data = fs__default['default'].readFileSync(filePath, {
+                                    encoding: 'utf8'
+                                });
                                 if (comment.includes('/*') || comment.includes('*/')) {
                                     data = comment + "\n" + data;
                                 }
@@ -197,9 +217,9 @@ var banner = function (comment) {
                                 }
                                 fs__default['default'].writeFileSync(filePath, data);
                             }
-                        }
-                        catch (e) {
-                            console.log(e);
+                            catch (e) {
+                                console.log(e);
+                            }
                         }
                     }
                     return [2];
