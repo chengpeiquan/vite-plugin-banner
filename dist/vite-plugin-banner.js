@@ -1,6 +1,6 @@
 /**
  * name: vite-plugin-banner
- * version: v0.1.2
+ * version: v0.1.3
  * author: chengpeiquan
  */'use strict';
 

@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { resolve } from 'path'
-import type { Plugin, ResolvedConfig } from 'vite'
+import type { ResolvedConfig } from 'vite'
 import checkComment from './checkComment'
 
 // 来自vite.config.ts的配置继承
@@ -16,7 +16,7 @@ const excludeRegexp: RegExp = new RegExp(/vendor/);
  * 给文件添加banner注释
  * @param {string} comment - 注释的内容，可以包含注释符号，也可以只传内容
  */
-const banner = (comment: string): Plugin | unknown => {
+const banner = (comment: string): any => {
   // 校验传入的注释内容合法性
   const error: string = checkComment(comment);
   if ( error ) {
@@ -29,7 +29,7 @@ const banner = (comment: string): Plugin | unknown => {
     configResolved (resolvedConfig: ResolvedConfig) {
       viteConfig = resolvedConfig;
     },
-    async writeBundle (options: unknown, bundle: unknown) {
+    async writeBundle (options: any, bundle: any) {
       for ( const file of Object.entries(bundle) ) {
         // 获取文件路径
         const root: string = viteConfig.root;
