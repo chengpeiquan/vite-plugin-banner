@@ -86,7 +86,7 @@ export default defineConfig({
 
 Run `npm run build`, you can see the banner become more detailed.
 
-e.g. in `app.b3a7772e.js`:
+e.g. in `app.6936be52.js`:
 
 ```js
 /**

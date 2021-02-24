@@ -1,9 +1,9 @@
 {
   "name": "vite-plugin-banner",
-  "version": "0.1.1",
-  "description": "A banner plugin for Vite.",
+  "version": "0.1.2",
+  "description": "A banner plugin for Vite. Adds a banner to the top of each generated chunk.",
   "main": "dist/vite-plugin-banner.min.js",
-  "types": "vite-plugin-banner.d.ts",
+  "types": "dist/main.d.ts",
   "scripts": {
     "build": "rollup -c rollup.config.ts"
   },

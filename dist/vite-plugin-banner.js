@@ -1,9 +1,8 @@
-/** 
+/**
  * name: vite-plugin-banner
- * version: v0.1.1
+ * version: v0.1.2
  * author: chengpeiquan
- */
- 'use strict';
+ */'use strict';
 
 var fs = require('fs');
 var path = require('path');
@@ -213,7 +212,7 @@ var banner = function (comment) {
                                     data = comment + "\n" + data;
                                 }
                                 else {
-                                    data = "/* " + comment + " */\n" + data;
+                                    data = "/*! " + comment + " */\n" + data;
                                 }
                                 fs__default['default'].writeFileSync(filePath, data);
                             }

@@ -9,12 +9,7 @@ import pkg from './package.json'
 
 // 版权信息配置
 const ResolveBanner = () => {
-  return `/** 
- * name: ${pkg.name}
- * version: v${pkg.version}
- * author: ${pkg.author}
- */
- `;
+  return `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * author: ${pkg.author}\n */`;
 }
 
 const outputOpt = {
