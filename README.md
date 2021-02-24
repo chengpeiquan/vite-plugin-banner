@@ -79,7 +79,7 @@ import pkg from './package.json'
 
 export default defineConfig({
   plugins: [
-    Banner(`/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: v${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`),
+    Banner(`/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`),
   ]
 })
 ```
@@ -92,7 +92,7 @@ e.g. in `app.6936be52.js`:
 /**
  * name: chengpeiquan.com
  * version: v0.1.0
- * description: vMy personal website, technology stack based on Vue.js 3.0, and Vite 2.0, use Server Side Generation.
+ * description: My personal website, technology stack based on Vue.js 3.0, and Vite 2.0, use Server Side Generation.
  * author: chengpeiquan
  * homepage: https://chengpeiquan.com/
  */
