@@ -86,7 +86,7 @@ export default defineConfig({
 
 运行 `npm run build` 打包, 你可以看到生成出来的 banner 注释更详细：
 
-例如，在生成的 `app.b3a7772e.js` 里:
+例如，在生成的 `app.6936be52.js` 里:
 
 ```js
 /**

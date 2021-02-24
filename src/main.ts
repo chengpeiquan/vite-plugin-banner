@@ -51,7 +51,7 @@ const banner = (comment: string): Plugin | unknown => {
             }
             // 否则添加注释符
             else {
-              data = `/* ${comment} */\n${data}`
+              data = `/*! ${comment} */\n${data}`
             }
 
             fs.writeFileSync(filePath, data)
