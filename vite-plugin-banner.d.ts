@@ -1,1 +1,1 @@
-declare module 'vue-baidu-analytics'
+declare module 'vite-plugin-banner'

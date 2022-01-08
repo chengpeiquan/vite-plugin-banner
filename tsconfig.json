@@ -6,7 +6,11 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
+    "moduleResolution": "node",
     "sourceMap": true,
+    "types": [
+      "node"
+    ],
     "baseUrl": ".",
     "paths": {
       "@/*": [
