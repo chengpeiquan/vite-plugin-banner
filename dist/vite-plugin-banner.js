@@ -1,8 +1,9 @@
 /**
  * name: vite-plugin-banner
- * version: v0.1.3
+ * version: v0.2.0
  * author: chengpeiquan
- */'use strict';
+ */
+'use strict';
 
 var fs = require('fs');
 var path = require('path');
@@ -165,29 +166,54 @@ function __generator(thisArg, body) {
   }
 }
 
-var checkComment = function (comment) {
-    if (typeof comment !== 'string') {
-        return 'The comment must be a string.';
+function verifyBanner (content) {
+    if (typeof content !== 'string') {
+        return 'The banner content must be a string.';
     }
-    if (!comment) {
-        return 'The comment can not be empty.';
+    if (!content) {
+        return 'The banner content can not be empty.';
     }
-    if ((comment.includes('/*') && !comment.includes('*/'))
-        ||
-            (!comment.includes('/*') && comment.includes('*/'))) {
+    if ((content.includes('/*') && !content.includes('*/')) ||
+        (!content.includes('/*') && content.includes('*/'))) {
         return 'If you want to pass in comment symbols, you must pass them in pairs.';
     }
     return '';
-};
+}
+
+function getConfig (options) {
+    var config = {
+        content: '',
+        outDir: '',
+    };
+    var type = Object.prototype.toString.call(options);
+    if (!['[object String]', '[object Object]'].includes(type)) {
+        throw new Error('[vite-plugin-banner] The options must be a string or an object.');
+    }
+    if (typeof options === 'string') {
+        config.content = options;
+    }
+    if (typeof options === 'object') {
+        if (!Object.prototype.hasOwnProperty.call(options, 'content')) {
+            throw new Error("[vite-plugin-banner] Missing \"content\" option.");
+        }
+        config.content = options.content;
+        if (Object.prototype.hasOwnProperty.call(options, 'outDir') &&
+            typeof options.outDir === 'string') {
+            config.outDir = options.outDir;
+        }
+    }
+    var error = verifyBanner(config.content);
+    if (error) {
+        throw new Error("[vite-plugin-banner] ".concat(error));
+    }
+    return config;
+}
 
 var viteConfig;
 var includeRegexp = new RegExp(/\.(css|js)$/i);
 var excludeRegexp = new RegExp(/vendor/);
-var banner = function (comment) {
-    var error = checkComment(comment);
-    if (error) {
-        throw new Error("[vite-plugin-banner] " + error);
-    }
+function main (pluginOptions) {
+    var pluginConfig = getConfig(pluginOptions);
     return {
         name: 'banner',
         configResolved: function (resolvedConfig) {
@@ -200,33 +226,35 @@ var banner = function (comment) {
                     for (_i = 0, _a = Object.entries(bundle); _i < _a.length; _i++) {
                         file = _a[_i];
                         root = viteConfig.root;
-                        outDir = viteConfig.build.outDir || 'dist';
-                        fileName = file[0];
+                        outDir = pluginConfig.outDir || viteConfig.build.outDir || 'dist';
+                        fileName = file[0].endsWith('.js-lean')
+                            ? file[0].replace(/\.js-lean/, '.lean.js')
+                            : file[0];
                         filePath = path.resolve(root, outDir, fileName);
                         if (includeRegexp.test(fileName) && !excludeRegexp.test(fileName)) {
                             try {
-                                data = fs__default['default'].readFileSync(filePath, {
-                                    encoding: 'utf8'
+                                data = fs__default["default"].readFileSync(filePath, {
+                                    encoding: 'utf8',
                                 });
-                                if (comment.includes('/*') || comment.includes('*/')) {
-                                    data = comment + "\n" + data;
+                                if (pluginConfig.content.includes('/*') ||
+                                    pluginConfig.content.includes('*/')) {
+                                    data = "".concat(pluginConfig.content, "\n").concat(data);
                                 }
                                 else {
-                                    data = "/*! " + comment + " */\n" + data;
+                                    data = "/*! ".concat(pluginConfig.content, " */\n").concat(data);
                                 }
-                                fs__default['default'].writeFileSync(filePath, data);
+                                fs__default["default"].writeFileSync(filePath, data);
                             }
                             catch (e) {
-                                console.log(e);
                             }
                         }
                     }
                     return [2];
                 });
             });
-        }
+        },
     };
-};
+}
 
-module.exports = banner;
+module.exports = main;
 //# sourceMappingURL=vite-plugin-banner.js.map

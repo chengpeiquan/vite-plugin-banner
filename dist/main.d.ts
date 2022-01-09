@@ -1,2 +1,2 @@
-declare const banner: (comment: string) => any;
-export default banner;
+import type { PluginOptions } from './types';
+export default function (pluginOptions: string | PluginOptions): any;
