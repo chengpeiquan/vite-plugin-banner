@@ -28,16 +28,18 @@ npm install --save-dev vite-plugin-banner
 
 ## Options
 
-Since `v0.2.0`, This plugin support a String or an Object to be the plugin options.
+Since `v0.2.0`, This plugin support a `String` or an `Object` to be the plugin options.
 
-Option Type|Description|Example
+Plugin Options Type|Description|Example
 :--|:--|:--
-string|The banner content|[Usage](#usage)
+string|The banner content|[Basic usage](#basic-usage)
 { outDir: string; content: string }|content: The comment content of the banner<br>outDir: The output directory from vite|[Optional parameter format](#optional-parameter-format)
 
 ## Usage
 
-In most cases, just use the String format as a plugin option.
+In most cases, just use the `String` format as a plugin option.
+
+In some special cases, such as in [VitePress](https://vitepress.vuejs.org/), you need to use `Object` format to pass in plugin options, see [Optional parameter format](#optional-parameter-format).
 
 ### Basic usage
 
