@@ -16,17 +16,26 @@ English | [简体中文](https://github.com/chengpeiquan/vite-plugin-banner/blob
 
 Adds a banner to the top of each generated chunk.
 
-## Usage
+## Install
 
-> ℹ️ **Only support for Vite 2.**
-
-### Install
-
-Install the package from npm (or yarn).
+Install the package from npm (or yarn, or pnpm).
 
 ```bash
 npm install --save-dev vite-plugin-banner
 ```
+
+## Options
+
+Since `v0.2.0`, This plugin support a String or an Object to be the plugin options.
+
+Option Type|Description|Example
+:-:|:--|:-:
+string|The banner content|See [Usage](#usage)
+{ outDir: string; content: string }|content: The comment content of the banner<br>outDir: The output directory from vite|See [Optional parameter format](#optional-parameter-format)
+
+## Usage
+
+> ℹ️ **Only support for Vite 2.**
 
 ### Basic usage
 
@@ -60,7 +69,6 @@ Of course, the most ideal banner is related to your package information.
 First, You need to update your `package.json` like this, For example, it contains such field content:
 
 ```json
-// package.json
 {
   "name": "chengpeiquan.com",
   "version": "0.1.0",
@@ -142,6 +150,8 @@ Run `npm run build`,  e.g. in `app.d9a287b8.js`:
      */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
+
+### Optional parameter format
 
 ## License
 
