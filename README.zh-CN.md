@@ -16,17 +16,30 @@
 
 为每个 chunk 文件头部添加 banner 注释。
 
-## 用法
-
 > ℹ️ **只支持 Vite 2.**
 
-### 安装
+## 安装
 
-从 npm (或者 yarn) 安装：
+从 npm (或者 yarn 或者 pnpm) 安装：
 
 ```bash
 npm install --save-dev vite-plugin-banner
 ```
+
+## 选项
+
+从 `v0.2.0` 开始, 这个插件支持使用 `String` 或者 `Object` 格式来作为插件选项。
+
+插件选项类型|作用描述|使用例子
+:--|:--|:--
+string|横幅注释的内容|[基础用法](#基础用法)
+{ outDir: string; content: string }|content: 横幅注释的内容<br>outDir: 来自 Vite 指定的输出目录|[可选参数格式](#可选参数格式)
+
+## 用法
+
+在大多数情况下，只需使用 `String` 格式作为插件选项。
+
+在一些特殊情况下，比如在 [VitePress](https://vitepress.vuejs.org/) 中，需要使用 `Object` 格式来传递插件选项，详见 [可选参数格式](#可选参数格式) 。
 
 ### 基础用法
 
@@ -34,12 +47,12 @@ npm install --save-dev vite-plugin-banner
 
 ```ts
 // vite.config.ts
-import Banner from 'vite-plugin-banner'
+import banner from 'vite-plugin-banner'
 // Other dependencies...
 
 export default defineConfig({
   plugins: [
-    Banner('This is the Banner content.'),
+    banner('This is the banner content.'),
   ]
 })
 ```
@@ -49,7 +62,7 @@ export default defineConfig({
 例如，在生成的 `app.b3a7772e.js` 里:
 
 ```js
-/* This is the Banner content. */
+/* This is the banner content. */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
 
@@ -60,7 +73,6 @@ var e=Object.assign;import{M as t,d as a,u as r,c......
 首先，你需要更新你的 `package.json` 文件，像这样，包含类似的字段内容：
 
 ```json
-// package.json
 {
   "name": "chengpeiquan.com",
   "version": "0.1.0",
@@ -79,7 +91,7 @@ import pkg from './package.json'
 
 export default defineConfig({
   plugins: [
-    Banner(`/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`),
+    banner(`/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`),
   ]
 })
 ```
@@ -113,7 +125,7 @@ var e=Object.assign;import{M as t,d as a,u as r,c......
 // vite.config.ts
 export default defineConfig({
   plugins: [
-    Banner(`
+    banner(`
     ██   ██         ███████   ██      ██ ████████   ██    ██   ███████   ██     ██
     ░██  ░██        ██░░░░░██ ░██     ░██░██░░░░░   ░░██  ██   ██░░░░░██ ░██    ░██
     ░██  ░██       ██     ░░██░██     ░██░██         ░░████   ██     ░░██░██    ░██
@@ -142,6 +154,40 @@ export default defineConfig({
      */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
+
+### 可选参数格式
+
+我不确定除了 VitePress 还有哪些场景需要用到这种方式来传入选项，所以我用 VitePress 来举例，希望能给到你参考。
+
+```ts
+// docs/.vitepress/config.ts
+import { defineConfig } from 'vitepress'
+import banner from 'vite-plugin-banner'
+import pkg from '../../package.json'
+
+const outDir = '../dist'
+
+export default defineConfig({
+  // 指定打包的输出目录
+  outDir,
+
+  // 使用 Vite 插件
+  vite: {
+    plugins: [
+      // 请记住在这里使用 Object 格式的选项
+      banner({
+        outDir,
+        content: `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`,
+      }),
+    ],
+  },
+  // ...
+})
+```
+
+为什么要这么做？
+
+因为在 VitePress 里，通过 viteConfig.build.outDir 拿到的永远是一个 `.temp` 的临时目录，不是最终的输出目录，所以你需要手动指定输出目录来告知插件。
 
 ## License
 
