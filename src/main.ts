@@ -1,68 +1,71 @@
 import fs from 'fs'
 import { resolve } from 'path'
+import getConfig from './libs/getConfig'
 import type { ResolvedConfig } from 'vite'
-import checkComment from './checkComment'
+import type { NormalizedOutputOptions, OutputBundle } from 'rollup'
+import type { PluginOptions, PluginConfig } from './types'
 
-// 来自vite.config.ts的配置继承
-let viteConfig: ResolvedConfig;
+// Extends the config from `vite.config.ts`
+let viteConfig: ResolvedConfig
 
-// 需要匹配的文件后缀
-const includeRegexp: RegExp = new RegExp(/\.(css|js)$/i);
+// File suffix that needs to be matched
+const includeRegexp: RegExp = new RegExp(/\.(css|js)$/i)
 
-// 需要排除的文件名
-const excludeRegexp: RegExp = new RegExp(/vendor/);
+// Filename to exclude
+const excludeRegexp: RegExp = new RegExp(/vendor/)
 
-/** 
- * 给文件添加banner注释
- * @param {string} comment - 注释的内容，可以包含注释符号，也可以只传内容
+/**
+ * Add banner comments to files
+ * @param options - A comment content or An option
  */
-const banner = (comment: string): any => {
-  // 校验传入的注释内容合法性
-  const error: string = checkComment(comment);
-  if ( error ) {
-    throw new Error(`[vite-plugin-banner] ${error}`);
-  }
+export default function (pluginOptions: string | PluginOptions): any {
+  // Get the plugin config
+  const pluginConfig: PluginConfig = getConfig(pluginOptions)
 
-  // 处理文件
+  // Handle files
   return {
     name: 'banner',
-    configResolved (resolvedConfig: ResolvedConfig) {
-      viteConfig = resolvedConfig;
+    configResolved(resolvedConfig: ResolvedConfig) {
+      viteConfig = resolvedConfig
     },
-    async writeBundle (options: any, bundle: any) {
-      for ( const file of Object.entries(bundle) ) {
-        // 获取文件路径
-        const root: string = viteConfig.root;
-        const outDir: string = viteConfig.build.outDir || 'dist';
-        const fileName: string = file[0];
-        const filePath: string = resolve(root, outDir, fileName);
+    async writeBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
+      for (const file of Object.entries(bundle)) {
+        // Get the full path of file
+        const root: string = viteConfig.root
+        const outDir: string =
+          pluginConfig.outDir || viteConfig.build.outDir || 'dist'
+        const fileName: string = file[0].endsWith('.js-lean')
+          ? file[0].replace(/\.js-lean/, '.lean.js')
+          : file[0]
+        const filePath: string = resolve(root, outDir, fileName)
 
-        // 只处理匹配到的文件
-        if ( includeRegexp.test(fileName) && !excludeRegexp.test(fileName) ) {
+        // Only handle matching files
+        if (includeRegexp.test(fileName) && !excludeRegexp.test(fileName)) {
           try {
-            // 读取文件内容
+            // Read the content from target file
             let data: string = fs.readFileSync(filePath, {
-              encoding: 'utf8'
+              encoding: 'utf8',
             })
 
-            // 如果传入了注释符，则按传入的处理
-            if ( comment.includes('/*') || comment.includes('*/') ) {
-              data = `${comment}\n${data}`
+            // If the banner content has comment symbol, use it directly
+            if (
+              pluginConfig.content.includes('/*') ||
+              pluginConfig.content.includes('*/')
+            ) {
+              data = `${pluginConfig.content}\n${data}`
             }
-            // 否则添加注释符
+            // Otherwise add comment symbol
             else {
-              data = `/*! ${comment} */\n${data}`
+              data = `/*! ${pluginConfig.content} */\n${data}`
             }
 
+            // Save
             fs.writeFileSync(filePath, data)
-          }
-          catch (e) {
-            console.log(e);
+          } catch (e) {
+            // console.log(e)
           }
         }
       }
-    }
+    },
   }
 }
-
-export default banner;

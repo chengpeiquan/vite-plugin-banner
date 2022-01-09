@@ -9,13 +9,13 @@ import pkg from './package.json'
 
 // 版权信息配置
 const ResolveBanner = () => {
-  return `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * author: ${pkg.author}\n */`;
+  return `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * author: ${pkg.author}\n */\n`
 }
 
 const outputOpt = {
   format: 'cjs',
   sourcemap: true,
-  exports: 'auto'
+  exports: 'auto',
 }
 
 export default {
@@ -23,33 +23,27 @@ export default {
   output: [
     {
       file: `dist/vite-plugin-banner.js`,
-      ...outputOpt
+      ...outputOpt,
     },
     {
       file: `dist/vite-plugin-banner.min.js`,
-      plugins: [
-        terser()
-      ],
-      ...outputOpt
-    }
+      plugins: [terser()],
+      ...outputOpt,
+    },
   ],
-  external: [
-    'rollup',
-    'fs',
-    'path'
-  ],
+  external: ['rollup', 'fs', 'path'],
   plugins: [
     resolve({
-      browser: true
+      browser: true,
     }),
     babel({
-      babelHelpers: 'bundled'
+      babelHelpers: 'bundled',
     }),
     commonjs(),
     json(),
     typescript(),
-    banner2( ResolveBanner, {
-      sourcemap: true
-    })
-  ]
-};
+    banner2(ResolveBanner, {
+      sourcemap: true,
+    }),
+  ],
+}

@@ -1,39 +1,67 @@
 {
   "name": "vite-plugin-banner",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "A banner plugin for Vite. Adds a banner to the top of each generated chunk.",
   "main": "dist/vite-plugin-banner.min.js",
   "types": "dist/main.d.ts",
   "scripts": {
-    "build": "rollup -c rollup.config.ts"
+    "build": "rollup -c rollup.config.ts",
+    "test": "jest --no-cache --detectOpenHandles",
+    "lint": "eslint src --ext .js,.ts",
+    "format": "prettier --write .",
+    "backup": "git add . && git commit -m \"chore: save the coding progress\" && git push"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chengpeiquan/vite-plugin-banner.git"
   },
   "keywords": [
-    "vite插件",
     "vite plugin",
     "vite banner"
   ],
   "author": "chengpeiquan",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.11.1",
+    "@babel/core": "^7.16.7",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/preset-env": "^7.11.0",
-    "@babel/preset-typescript": "^7.10.4",
+    "@babel/preset-env": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
     "@rollup/plugin-babel": "^5.2.0",
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/babel__core": "^7.1.9",
+    "@types/jest": "^27.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "babel-jest": "^27.4.6",
+    "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^27.4.7",
+    "lint-staged": "^12.1.7",
+    "prettier": "^2.5.1",
     "rollup": "^2.26.4",
     "rollup-plugin-banner2": "^1.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "rollup-plugin-typescript2": "^0.27.2",
-    "tslib": "^2.0.1",
-    "typescript": "^4.0.2",
-    "vite": "^2.0.2"
+    "rollup-plugin-typescript2": "^0.27.3",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^10.4.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.4",
+    "vite": "^2.0.2",
+    "yorkie": "^2.0.0"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "node scripts/verifyCommit.js"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
   }
 }
