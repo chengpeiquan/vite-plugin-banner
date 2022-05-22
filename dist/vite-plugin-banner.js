@@ -210,7 +210,7 @@ function getConfig (options) {
 }
 
 var viteConfig;
-var includeRegexp = new RegExp(/\.(css|js)$/i);
+var includeRegexp = new RegExp(/\.(css|[mc]?js)$/i);
 var excludeRegexp = new RegExp(/vendor/);
 function main (pluginOptions) {
     var pluginConfig = getConfig(pluginOptions);
