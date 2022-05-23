@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-banner",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A banner plugin for Vite. Adds a banner to the top of each generated chunk.",
   "main": "dist/vite-plugin-banner.min.js",
   "types": "dist/main.d.ts",
