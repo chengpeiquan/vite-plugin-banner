@@ -11,7 +11,7 @@ export type { BannerPluginOptions, PluginConfig } from './types'
 let viteConfig: ResolvedConfig
 
 // File suffix that needs to be matched
-const includeRegexp: RegExp = new RegExp(/\.(css|js)$/i)
+const includeRegexp: RegExp = new RegExp(/\.(css|[mc]?js)$/i)
 
 // Filename to exclude
 const excludeRegexp: RegExp = new RegExp(/vendor/)
