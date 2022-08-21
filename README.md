@@ -16,8 +16,6 @@ English | [简体中文](https://github.com/chengpeiquan/vite-plugin-banner/blob
 
 Adds a banner to the top of each generated chunk.
 
-> ℹ️ **Only support for Vite 2.** <br>Since v0.3.0, ESM and CommonJS module files are supported.
-
 ## Install
 
 Install the package from npm (or yarn, or pnpm).

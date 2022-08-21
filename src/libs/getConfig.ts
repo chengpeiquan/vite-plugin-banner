@@ -1,7 +1,7 @@
 import verifyBanner from './verifyBanner'
-import type { PluginOptions, PluginConfig } from '../types'
+import type { BannerPluginOptions, PluginConfig } from '../types'
 
-export default function (options: string | PluginOptions): PluginConfig {
+export default function (options: string | BannerPluginOptions): PluginConfig {
   // Set a default config
   const config: PluginConfig = {
     content: '',

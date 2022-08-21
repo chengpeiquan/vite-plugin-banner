@@ -7,28 +7,24 @@ import banner2 from 'rollup-plugin-banner2'
 import typescript from 'rollup-plugin-typescript2'
 import pkg from './package.json'
 
-// 版权信息配置
-const ResolveBanner = () => {
-  return `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * author: ${pkg.author}\n */\n`
-}
-
-const outputOpt = {
-  format: 'cjs',
-  sourcemap: true,
+const outputOptions = {
+  sourcemap: false,
   exports: 'auto',
+  plugins: [terser()],
 }
 
 export default {
   input: 'src/main.ts',
   output: [
     {
-      file: `dist/vite-plugin-banner.js`,
-      ...outputOpt,
+      file: `dist/index.cjs`,
+      format: 'cjs',
+      ...outputOptions,
     },
     {
-      file: `dist/vite-plugin-banner.min.js`,
-      plugins: [terser()],
-      ...outputOpt,
+      file: `dist/index.mjs`,
+      format: 'es',
+      ...outputOptions,
     },
   ],
   external: ['rollup', 'fs', 'path'],
@@ -42,8 +38,12 @@ export default {
     commonjs(),
     json(),
     typescript(),
-    banner2(ResolveBanner, {
-      sourcemap: true,
-    }),
+    banner2(
+      () =>
+        `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * author: ${pkg.author}\n * repo: ${pkg.homepage}\n */\n`,
+      {
+        sourcemap: true,
+      }
+    ),
   ],
 }
