@@ -1,21 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES5",
-    "module": "ES2015",
+    "target": "ESNext",
+    "module": "ESNext",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-    "removeComments": true,
     "preserveConstEnums": true,
     "moduleResolution": "node",
-    "sourceMap": true,
     "types": ["node", "jest"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "@m/*": ["src/modules/*"]
-    },
-    "declaration": true,
-    "declarationDir": "./dist"
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

@@ -16,8 +16,6 @@
 
 为每个 chunk 文件头部添加 banner 注释。
 
-> ℹ️ **只支持 Vite 2.**
-
 ## 安装
 
 从 npm (或者 yarn 或者 pnpm) 安装：

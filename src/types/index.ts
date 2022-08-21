@@ -3,7 +3,7 @@
  * @param content - The comment content of the banner
  * @param outDir - The output directory from vite
  */
-export interface PluginOptions {
+export interface BannerPluginOptions {
   content: string
   outDir?: string
 }

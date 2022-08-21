@@ -3,7 +3,9 @@ import { resolve } from 'path'
 import getConfig from './libs/getConfig'
 import type { ResolvedConfig } from 'vite'
 import type { NormalizedOutputOptions, OutputBundle } from 'rollup'
-import type { PluginOptions, PluginConfig } from './types'
+import type { BannerPluginOptions, PluginConfig } from './types'
+
+export type { BannerPluginOptions, PluginConfig } from './types'
 
 // Extends the config from `vite.config.ts`
 let viteConfig: ResolvedConfig
@@ -16,9 +18,9 @@ const excludeRegexp: RegExp = new RegExp(/vendor/)
 
 /**
  * Add banner comments to files
- * @param options - A comment content or An option
+ * @param pluginOptions - A comment content or An option
  */
-export default function (pluginOptions: string | PluginOptions): any {
+export default function (pluginOptions: string | BannerPluginOptions): any {
   // Get the plugin config
   const pluginConfig: PluginConfig = getConfig(pluginOptions)
 
@@ -62,7 +64,7 @@ export default function (pluginOptions: string | PluginOptions): any {
             // Save
             fs.writeFileSync(filePath, data)
           } catch (e) {
-            // console.log(e)
+            console.log(e)
           }
         }
       }
