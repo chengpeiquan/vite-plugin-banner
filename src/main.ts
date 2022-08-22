@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { resolve } from 'path'
-import getConfig from './libs/getConfig'
+import formatConfig from './libs/formatConfig'
 import type { ResolvedConfig } from 'vite'
 import type { NormalizedOutputOptions, OutputBundle } from 'rollup'
 import type { BannerPluginOptions, PluginConfig } from './types'
@@ -22,7 +22,7 @@ const excludeRegexp: RegExp = new RegExp(/vendor/)
  */
 export default function (pluginOptions: string | BannerPluginOptions): any {
   // Get the plugin config
-  const pluginConfig: PluginConfig = getConfig(pluginOptions)
+  const pluginConfig: PluginConfig = formatConfig(pluginOptions)
 
   // Handle files
   return {
@@ -64,7 +64,10 @@ export default function (pluginOptions: string | BannerPluginOptions): any {
             // Save
             fs.writeFileSync(filePath, data)
           } catch (e) {
-            console.log(e)
+            // The error log is only printed when the debug option is enabled
+            if (pluginConfig.debug) {
+              console.log(e)
+            }
           }
         }
       }

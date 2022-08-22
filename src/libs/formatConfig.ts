@@ -1,15 +1,25 @@
 import verifyBanner from './verifyBanner'
 import type { BannerPluginOptions, PluginConfig } from '../types'
 
-export default function (options: string | BannerPluginOptions): PluginConfig {
+/**
+ * Process options of different formats into a unified format
+ * @param options - Some options from `vite.config.[ts|js]`
+ * @returns A unified plugin option
+ */
+export default function formatConfig(
+  options: string | BannerPluginOptions
+): PluginConfig {
   // Set a default config
   const config: PluginConfig = {
     content: '',
-    outDir: '',
+    outDir: 'dist',
+    debug: false,
   }
 
-  // illegal type
+  // Type of plugin options
   const type: string = Object.prototype.toString.call(options)
+
+  // Block illegal types
   if (!['[object String]', '[object Object]'].includes(type)) {
     throw new Error(
       '[vite-plugin-banner] The options must be a string or an object.'
@@ -36,12 +46,15 @@ export default function (options: string | BannerPluginOptions): PluginConfig {
     ) {
       config.outDir = options.outDir
     }
+
+    // Update the `debug` option
+    config.debug = Boolean(options.debug)
   }
 
   // Verify the validity of the incoming comment content
-  const error: string = verifyBanner(config.content)
-  if (error) {
-    throw new Error(`[vite-plugin-banner] ${error}`)
+  const errMsg: string = verifyBanner(config.content)
+  if (errMsg) {
+    throw new Error(`[vite-plugin-banner] ${errMsg}`)
   }
 
   return config

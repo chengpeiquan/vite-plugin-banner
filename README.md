@@ -21,23 +21,49 @@ Adds a banner to the top of each generated chunk.
 Install the package from npm (or yarn, or pnpm).
 
 ```bash
-npm install --save-dev vite-plugin-banner
+npm install -D vite-plugin-banner
 ```
 
 ## Options
 
-Since `v0.2.0`, This plugin support a `String` or an `Object` to be the plugin options.
-
 Plugin Options Type|Description|Example
 :--|:--|:--
 string|The banner content|[Basic usage](#basic-usage)
-{ outDir: string; content: string }|content: The comment content of the banner<br>outDir: The output directory from vite|[Optional parameter format](#optional-parameter-format)
+BannerPluginOptions|See the type declarations below|[Optional parameter format](#optional-parameter-format)
+
+· Type Declarations:
+
+```ts
+/**
+ * Some options from `vite.config.[ts|js]`
+ * @tips This options type is supported since `0.2.0`
+ */
+export interface BannerPluginOptions {
+  /**
+   * The comment content of the banner
+   */
+  content: string
+
+  /**
+   * The output directory from the configuration of Vite.js
+   * @default `dist`
+   */
+  outDir?: string
+
+  /**
+   * Whether to print error messages to the console
+   * @tips This option is supported since `0.4.0`
+   * @default `false`
+   */
+  debug?: boolean
+}
+```
 
 ## Usage
 
 In most cases, just use the `String` format as a plugin option.
 
-In some special cases, such as in [VitePress](https://vitepress.vuejs.org/), you need to use `Object` format to pass in plugin options, see [Optional parameter format](#optional-parameter-format).
+In some special cases, such as in [VitePress](https://vitepress.vuejs.org/), you might need to use `Object` format to pass in plugin options, see [Optional parameter format](#optional-parameter-format).
 
 ### Basic usage
 
@@ -155,7 +181,7 @@ var e=Object.assign;import{M as t,d as a,u as r,c......
 
 ### Optional parameter format
 
-I'm not sure what other scenarios besides VitePress need to use this method to pass in options, so I use VitePress as an example, I hope it can give you a reference
+I'm not sure what other scenarios besides VitePress need to use this method to pass in options, so I use VitePress as an example, I hope it can give you a reference.
 
 ```ts
 // docs/.vitepress/config.ts
@@ -185,7 +211,9 @@ export default defineConfig({
 
 Why do it?
 
-Because in VitePress, what you get through `viteConfig.build.outDir` is always a `.temp` temporary directory, not the final output directory, so you need to manually specify the output directory to inform the plugin
+Because in VitePress, what you get through `viteConfig.build.outDir` is always a `.temp` temporary directory, not the final output directory, so you need to manually specify the output directory to inform the plugin.
+
+Of course, with the updated version of Vitepress, this is not necessarily required, but you can choose to do so when you need it.
 
 ## License
 
