@@ -26,18 +26,44 @@ npm install --save-dev vite-plugin-banner
 
 ## 选项
 
-从 `v0.2.0` 开始, 这个插件支持使用 `String` 或者 `Object` 格式来作为插件选项。
-
 插件选项类型|作用描述|使用例子
 :--|:--|:--
 string|横幅注释的内容|[基础用法](#基础用法)
-{ outDir: string; content: string }|content: 横幅注释的内容<br>outDir: 来自 Vite 指定的输出目录|[可选参数格式](#可选参数格式)
+BannerPluginOptions|请参阅下方的类型声明|[可选参数格式](#可选参数格式)
+
+· Type Declarations:
+
+```ts
+/**
+ * 来自 `vite.config.[ts|js]` 的一些选项
+ * @tips 从 `0.2.0` 开始支持此选项类型
+ */
+export interface BannerPluginOptions {
+  /**
+   * Banner 的注释内容
+   */
+  content: string
+
+  /**
+   * Vite.js 配置的输出目录
+   * @default `dist`
+   */
+  outDir?: string
+
+  /**
+   * 是否将错误信息打印到控制台
+   * @tips 从 `0.4.0` 开始支持此选项
+   * @default `false`
+   */
+  debug?: boolean
+}
+```
 
 ## 用法
 
 在大多数情况下，只需使用 `String` 格式作为插件选项。
 
-在一些特殊情况下，比如在 [VitePress](https://vitepress.vuejs.org/) 中，需要使用 `Object` 格式来传递插件选项，详见 [可选参数格式](#可选参数格式) 。
+在一些特殊情况下，比如在 [VitePress](https://vitepress.vuejs.org/) 中，可能需要使用 `Object` 格式来传递插件选项，详见 [可选参数格式](#可选参数格式) 。
 
 ### 基础用法
 
@@ -46,7 +72,7 @@ string|横幅注释的内容|[基础用法](#基础用法)
 ```ts
 // vite.config.ts
 import banner from 'vite-plugin-banner'
-// Other dependencies...
+// 其他依赖...
 
 export default defineConfig({
   plugins: [
@@ -85,7 +111,7 @@ var e=Object.assign;import{M as t,d as a,u as r,c......
 ```ts
 // vite.config.ts
 import pkg from './package.json'
-// Other dependencies...
+// 其他依赖...
 
 export default defineConfig({
   plugins: [
@@ -186,6 +212,8 @@ export default defineConfig({
 为什么要这么做？
 
 因为在 VitePress 里，通过 viteConfig.build.outDir 拿到的永远是一个 `.temp` 的临时目录，不是最终的输出目录，所以你需要手动指定输出目录来告知插件。
+
+当然，随着 Vitepress 的版本更新，不一定需要这么做，只是当你需要的时候，可以选择这么处理。
 
 ## License
 
