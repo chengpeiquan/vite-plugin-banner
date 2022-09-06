@@ -36,7 +36,7 @@ BannerPluginOptions|请参阅下方的类型声明|[可选参数格式](#可选�
 ```ts
 /**
  * 来自 `vite.config.[ts|js]` 的一些选项
- * @tips 从 `0.2.0` 开始支持此选项类型
+ * @since 0.2.0
  */
 export interface BannerPluginOptions {
   /**
@@ -52,10 +52,18 @@ export interface BannerPluginOptions {
 
   /**
    * 是否将错误信息打印到控制台
-   * @tips 从 `0.4.0` 开始支持此选项
+   * @since 0.4.0
    * @default `false`
    */
   debug?: boolean
+
+  /**
+   * 默认会验证内容的合法性，设置为 `false` 则不验证
+   * @see https://github.com/chengpeiquan/vite-plugin-banner/issues/13
+   * @since 0.5.0
+   * @default `true`
+   */
+  verify?: boolean
 }
 ```
 
