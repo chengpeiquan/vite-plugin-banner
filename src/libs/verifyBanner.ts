@@ -3,7 +3,7 @@
  * @param content - The content of banner
  * @return The error message, when success, if will be a empty string
  */
-export default function (content: string): string {
+export default function verifyBanner(content: string): string {
   // illegal type
   if (typeof content !== 'string') {
     return 'The banner content must be a string.'

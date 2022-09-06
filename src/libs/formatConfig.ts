@@ -14,6 +14,7 @@ export default function formatConfig(
     content: '',
     outDir: 'dist',
     debug: false,
+    verify: true,
   }
 
   // Type of plugin options
@@ -49,13 +50,20 @@ export default function formatConfig(
 
     // Update the `debug` option
     config.debug = Boolean(options.debug)
+
+    // Update the `verify` option
+    if (typeof options.verify === 'boolean') {
+      config.verify = options.verify
+    }
   }
+
+  // No verification required
+  if (!config.verify) return config
 
   // Verify the validity of the incoming comment content
   const errMsg: string = verifyBanner(config.content)
   if (errMsg) {
     throw new Error(`[vite-plugin-banner] ${errMsg}`)
   }
-
   return config
 }
