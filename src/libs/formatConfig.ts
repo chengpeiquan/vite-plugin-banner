@@ -33,6 +33,12 @@ export default function formatConfig(
     config.content = options
   }
 
+  // The options maybe a String
+  if (typeof options === 'function') {
+    config.content = options
+    return config
+  }
+
   // The options maybe an Object
   if (typeof options === 'object') {
     // Update the `content` option
@@ -66,10 +72,12 @@ export default function formatConfig(
       config.exclude = options.exclude
     }
   }
-
   // No verification required
   if (!config.verify) return config
 
+  if (typeof config.content === 'function') {
+    return config
+  }
   // Verify the validity of the incoming comment content
   const errMsg: string = verifyBanner(config.content)
   if (errMsg) {

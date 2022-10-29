@@ -77,7 +77,11 @@ export default function (pluginOptions: string | BannerPluginOptions): any {
             let data: string = fs.readFileSync(filePath, {
               encoding: 'utf8',
             })
-
+            if (typeof pluginConfig.content === 'function') {
+              const replaceText = pluginConfig.content(fileName)
+              if (replaceText === null || replaceText === '') return
+              pluginConfig.content = replaceText
+            }
             // If the banner content has comment symbol, use it directly
             if (
               pluginConfig.content.includes('/*') ||
@@ -89,7 +93,6 @@ export default function (pluginOptions: string | BannerPluginOptions): any {
             else {
               data = `/*! ${pluginConfig.content} */\n${data}`
             }
-
             // Save
             fs.writeFileSync(filePath, data)
           } catch (e) {

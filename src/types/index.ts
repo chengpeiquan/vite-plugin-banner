@@ -6,8 +6,20 @@
 export interface BannerPluginOptions {
   /**
    * The comment content of the banner
+   *
+   * @since 0.6.0
+   *
+   * callback function available since 0.6.0
+   * @example <caption>content Callback(since 0.6.0)</caption>
+   * ```ts
+   * content: (fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''
+   * // inject into js file, but not inject into css file
+   * // You can also continue to write other flows.
+   * ```
+   * @param fileName - The name of the file
+   * @returns {string | contentCallback} What want to inject into the file. More details see {@link contentCallback}
    */
-  content: string
+  content: string | contentCallback
 
   /**
    * The output directory from the configuration of Vite.js
@@ -37,13 +49,15 @@ export interface BannerPluginOptions {
    *
    * support `strings`, `RegExp`, and `function`.
    * @example <caption>Exclude css files</caption>
-   * - '.css'
-   * - /\.css/
-   * - (file) => file.endsWith('.css')
+   * exclude: '.css'
+   * // or
+   * exclude: /\.css/
+   * // or
+   * exclude: (file) => file.endsWith('.css')
    * @since 0.6.0
    * @default undefined
    * @param fileName - The file name
-   * @returns Whether to exclude the file. See more: {@link excludeCallback}
+   * @returns {boolean} Whether to exclude the file. See more: {@link excludeCallback}
    */
   exclude?: string | RegExp | excludeCallback
 }
@@ -52,7 +66,7 @@ export interface BannerPluginOptions {
  * Configuration of the plugin's internal runtime
  */
 export interface PluginConfig {
-  content: string
+  content: string | contentCallback
   outDir: string
   debug: boolean
   verify: boolean
@@ -68,3 +82,13 @@ export interface PluginConfig {
  * `false`: inject banner.
  */
 export type excludeCallback = (fileName: string) => boolean
+
+/** Callback function to exclude specified files
+ * @param {string} fileName - current File name
+ * @returns {string | null} What to inject into the file.
+ *
+ * `null` or `""`: do not inject anything.
+ *
+ * `string`: the string to inject.
+ */
+export type contentCallback = (fileName: string) => string | null

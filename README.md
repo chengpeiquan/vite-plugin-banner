@@ -41,8 +41,20 @@ npm install -D vite-plugin-banner
 export interface BannerPluginOptions {
   /**
    * The comment content of the banner
+   *
+   * @since 0.6.0
+   *
+   * callback function available since 0.6.0
+   * @example <caption>content Callback(since 0.6.0)</caption>
+   * ```ts
+   * content: (fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''
+   * // inject into js file, but not inject into css file
+   * // You can also continue to write other configurations.
+   * ```
+   * @param fileName - The name of the file
+   * @returns {string | contentCallback} What want to inject into the file. More details see {@link contentCallback}
    */
-  content: string
+  content: string | contentCallback
 
   /**
    * The output directory from the configuration of Vite.js
