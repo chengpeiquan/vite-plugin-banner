@@ -46,14 +46,14 @@ export interface BannerPluginOptions {
 
   /**
    * Vite.js 配置的输出目录
-   * @default `dist`
+   * @default 'dist'
    */
   outDir?: string
 
   /**
    * 是否将错误信息打印到控制台
    * @since 0.4.0
-   * @default `false`
+   * @default false
    */
   debug?: boolean
 
@@ -61,9 +61,22 @@ export interface BannerPluginOptions {
    * 默认会验证内容的合法性，设置为 `false` 则不验证
    * @see https://github.com/chengpeiquan/vite-plugin-banner/issues/13
    * @since 0.5.0
-   * @default `true`
+   * @default true
    */
   verify?: boolean
+
+  /**
+   * 排除指定的文件，支持字符串，正则表达式，和回调函数
+   * @example 例如：排除css文件
+   * - '.css'
+   * - /\.css/
+   * - (file) => file.endsWith('.css')
+   * @since 0.6.0
+   * @default undefined
+   * @param fileName - 文件名
+   * @returns 是否排除该文件。更多查阅 {@link excludeCallback}
+   */
+  exclude?: string | RegExp | ((fileName: string) => boolean)
 }
 ```
 

@@ -26,10 +26,10 @@ npm install -D vite-plugin-banner
 
 ## Options
 
-Plugin Options Type|Description|Example
-:--|:--|:--
-string|The banner content|[Basic usage](#basic-usage)
-BannerPluginOptions|See the type declarations below|[Optional parameter format](#optional-parameter-format)
+| Plugin Options Type | Description                     | Example                                                 |
+| :------------------ | :------------------------------ | :------------------------------------------------------ |
+| string              | The banner content              | [Basic usage](#basic-usage)                             |
+| BannerPluginOptions | See the type declarations below | [Optional parameter format](#optional-parameter-format) |
 
 · Type Declarations:
 
@@ -65,6 +65,19 @@ export interface BannerPluginOptions {
    * @default `true`
    */
   verify?: boolean
+
+  /**
+   * Exclude specified files, supports string, RegExp and function.
+   * @example Exclude css files
+   * - '.css'
+   * - /\.css/
+   * - (file) => file.endsWith('.css')
+   * @since 0.6.0
+   * @default `undefined`
+   * @param fileName - The file name
+   * @returns Whether to exclude the file. See more: {@link excludeCallback}
+   */
+  exclude?: string | RegExp | ((fileName: string) => boolean)
 }
 ```
 

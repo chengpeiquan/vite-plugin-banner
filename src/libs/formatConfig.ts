@@ -15,6 +15,7 @@ export default function formatConfig(
     outDir: 'dist',
     debug: false,
     verify: true,
+    exclude: undefined,
   }
 
   // Type of plugin options
@@ -54,6 +55,15 @@ export default function formatConfig(
     // Update the `verify` option
     if (typeof options.verify === 'boolean') {
       config.verify = options.verify
+    }
+
+    // Update the `exclude` option
+    if (
+      typeof options.exclude === 'string' ||
+      options.exclude instanceof RegExp ||
+      typeof options.exclude === 'function'
+    ) {
+      config.exclude = options.exclude
     }
   }
 

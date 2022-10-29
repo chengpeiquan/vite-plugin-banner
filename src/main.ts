@@ -41,8 +41,37 @@ export default function (pluginOptions: string | BannerPluginOptions): any {
           : file[0]
         const filePath: string = resolve(root, outDir, fileName)
 
+        const excludeOptions = pluginConfig.exclude
+        let exclude: boolean = false
+
+        switch (typeof excludeOptions) {
+          case 'undefined':
+            break
+          case 'string':
+            exclude = fileName.includes(excludeOptions)
+            break
+          case 'function':
+            exclude = excludeOptions(fileName)
+            break
+          case 'object':
+            if (!(excludeOptions instanceof RegExp))
+              throw new Error(
+                `[vite-plugin-banner] The "exclude" option must be a string, a function or a regular expression.`
+              )
+            exclude = excludeOptions.test(fileName)
+            break
+          default:
+            throw new Error(
+              `[vite-plugin-banner] The "exclude" option must be a string, a function or a regular expression.`
+            )
+        }
+
         // Only handle matching files
-        if (includeRegexp.test(fileName) && !excludeRegexp.test(fileName)) {
+        if (
+          includeRegexp.test(fileName) &&
+          !excludeRegexp.test(fileName) &&
+          !exclude
+        ) {
           try {
             // Read the content from target file
             let data: string = fs.readFileSync(filePath, {
