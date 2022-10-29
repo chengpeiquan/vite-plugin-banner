@@ -83,7 +83,7 @@ export interface PluginConfig {
  */
 export type excludeCallback = (fileName: string) => boolean
 
-/** Callback function to exclude specified files
+/** Callback function to get the contents to be injected.(or not inject)
  * @param {string} fileName - current File name
  * @returns {string | null} What to inject into the file.
  *
