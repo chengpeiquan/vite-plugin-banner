@@ -112,6 +112,49 @@ e.g. in `app.b3a7772e.js`:
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
 
+### Add different banner by file name
+
+File name `exclude` support has been added since `0.6.0`, allowing different banners to be added for different types of files (e.g. `css` and `js`), which may not be very useful for all users, but it is possible to package css, font, images etc. into a single css file at packaging time for tampermonkey + vue, which can be written via resource.
+
+e.g.
+
+```ts
+// vite.config.ts
+import banner from 'vite-plugin-banner'
+// Other dependencies...
+
+export default defineConfig({
+  plugins: [
+    // Use Object format here
+    banner({
+      content: `This will be added into js file`,
+      exclude: ".css",// This is [exclude .css files],
+                      // so it is actually loaded into the js here
+    }),
+    banner({
+      content: `And this line will be added into css file`,
+      exclude: ".js",// Ditto.
+    }),
+  ],
+  // ...
+})
+```
+
+output file:
+
+js file:
+
+```js
+/* This will be added into js file */
+var e=Object.assign;import{M as t,d as a,u as r,c......
+```
+
+while css file:
+```css
+/* And this line will be added into css file */
+body{width:100%;padding:16px;margin-right......
+```
+
 ### Advanced usage
 
 Of course, the most ideal banner is related to your package information.

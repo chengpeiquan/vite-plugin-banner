@@ -111,6 +111,47 @@ export default defineConfig({
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
 
+### 针对文件名不同的 banner
+
+从`0.6.0`版本开始，添加`exclude`文件支持，可以对于不同类型的文件（比如`css`和`js`）添加不同的 banner ，对于部分用户可能用处不大，但是对于 tampermonkey + vue 可以在打包时把css、font、图片等内容打包成css单文件，通过 resource 进行写入。
+
+例如：
+
+```ts
+// vite.config.ts
+import banner from 'vite-plugin-banner'
+// 其他依赖...
+
+export default defineConfig({
+  plugins: [
+    // 请记住在这里使用 Object 格式的选项
+    banner({
+      content: `这里会加载到js里`,
+      exclude: ".css",// 这里是【排除css文件】，因此实际上这里是加载到js中的
+    }),
+    banner({
+      content: `而这一行会加载到css里`,
+      exclude: ".js",// 这里是【排除js文件】，因此这里实际上是加载到css中的
+    }),
+  ],
+  // ...
+})
+```
+
+输出的文件：
+
+js 文件：
+```js
+/* 这里会加载到js里 */
+var e=Object.assign;import{M as t,d as a,u as r,c......
+```
+
+css 文件：
+```css
+/* 而这一行会加载到css里 */
+body{width:100%;padding:16px;margin-right......
+```
+
 ### 高级用法
 
 当然，最理想的 banner 注释是和你的项目信息相关联。
