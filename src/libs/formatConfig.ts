@@ -1,5 +1,9 @@
 import verifyBanner from './verifyBanner'
-import type { BannerPluginOptions, PluginConfig } from '../types'
+import type {
+  BannerPluginOptions,
+  contentCallback,
+  PluginConfig,
+} from '../types'
 
 /**
  * Process options of different formats into a unified format
@@ -7,7 +11,7 @@ import type { BannerPluginOptions, PluginConfig } from '../types'
  * @returns A unified plugin option
  */
 export default function formatConfig(
-  options: string | BannerPluginOptions
+  options: string | BannerPluginOptions | contentCallback
 ): PluginConfig {
   // Set a default config
   const config: PluginConfig = {

@@ -124,7 +124,26 @@ var e=Object.assign;import{M as t,d as a,u as r,c......
 
 ### 针对文件名不同的 banner
 
-从`0.6.0`版本开始，添加`exclude`文件支持，可以对于不同类型的文件（比如`css`和`js`）添加不同的 banner ，对于部分用户可能用处不大，但是对于 tampermonkey + vue 可以在打包时把css、font、图片等内容打包成css单文件，通过 resource 进行写入。
+从`0.6.0`版本开始，支持文件名回调。返回值为`nul`或者`""`则不注入，返回字符串则进行注入。
+
+e.g.
+
+```ts
+// vite.config.ts
+import banner from 'vite-plugin-banner'
+// 其他依赖...
+
+export default defineConfig({
+  plugins: [
+    banner((fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''),
+  ]
+})
+```
+这样会在`.js`文件里添加 banner，当然可以自定义流程进行不同的返回。对于部分用户可能用处不大，但是对于 tampermonkey + vue 可以在打包时把css、font、图片等内容打包成css单文件，通过 resource 进行写入。
+
+`connect`参数同样也支持。
+
+此外，也可以通过配置`exclude`添加不同的 banner。
 
 例如：
 
@@ -162,6 +181,7 @@ css 文件：
 /* 而这一行会加载到css里 */
 body{width:100%;padding:16px;margin-right......
 ```
+显而易见，通过内容的回调会更简单并且清楚
 
 ### 高级用法
 

@@ -49,7 +49,7 @@ export interface BannerPluginOptions {
    * ```ts
    * content: (fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''
    * // inject into js file, but not inject into css file
-   * // You can also continue to write other configurations.
+   * // You can also continue to write other flows.
    * ```
    * @param fileName - The name of the file
    * @returns {string | contentCallback} What want to inject into the file. More details see {@link contentCallback}
@@ -126,7 +126,26 @@ var e=Object.assign;import{M as t,d as a,u as r,c......
 
 ### Add different banner by file name
 
-File name `exclude` support has been added since `0.6.0`, allowing different banners to be added for different types of files (e.g. `css` and `js`), which may not be very useful for all users, but it is possible to package css, font, images etc. into a single css file at packaging time for tampermonkey + vue, which can be written via resource.
+filename callbacks are supported since `0.6.0`. Return values of `nul` or `""` means not injected, while string returns are injected.
+
+e.g.
+
+```ts
+// vite.config.ts
+import banner from 'vite-plugin-banner'
+// Other dependencies...
+
+export default defineConfig({
+  plugins: [
+    banner((fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''),
+  ]
+})
+```
+In this way, it will add the banner to the `.js` file, of course, it is convenient to customize the flow for different returns. Different banners can be added for different types of files (e.g. `css` and `js`), which may not be very useful for all users, but it is possible to package css, font, images etc. into a single css file at packaging time for tampermonkey + vue, which can be written via resource.
+
+The `connect` parameter is also supported.
+
+In addition, different banners can be added by configuring `exclude`.
 
 e.g.
 
@@ -166,6 +185,8 @@ while css file:
 /* And this line will be added into css file */
 body{width:100%;padding:16px;margin-right......
 ```
+
+Obviously, via content callback would be simpler and clearer.
 
 ### Advanced usage
 
