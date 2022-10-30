@@ -25,9 +25,11 @@ export default function formatConfig(
   const type: string = Object.prototype.toString.call(options)
 
   // Block illegal types
-  if (!['[object String]', '[object Object]', '[object Function]'].includes(type)) {
+  if (
+    !['[object String]', '[object Object]', '[object Function]'].includes(type)
+  ) {
     throw new Error(
-      '[vite-plugin-banner] The options must be a string, an object or a callback function.'
+      '[vite-plugin-banner] The options must be a string, an object or a function.'
     )
   }
 

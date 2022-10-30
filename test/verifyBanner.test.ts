@@ -14,12 +14,16 @@ describe('verifyBanner.ts', () => {
 
 describe('verifyBanner.ts', () => {
   test('Illegal content type', () => {
-    expect(verifyBanner(null)).toBe('The banner content must be a string.')
+    expect(verifyBanner(null as any)).toBe(
+      'The banner content must be a string.'
+    )
   })
 })
 
 describe('verifyBanner.ts', () => {
   test('Illegal content type', () => {
-    expect(verifyBanner(undefined)).toBe('The banner content must be a string.')
+    expect(verifyBanner(undefined as any)).toBe(
+      'The banner content must be a string.'
+    )
   })
 })
