@@ -26,10 +26,10 @@ npm install -D vite-plugin-banner
 
 ## Options
 
-Plugin Options Type|Description|Example
-:--|:--|:--
-string|The banner content|[Basic usage](#basic-usage)
-BannerPluginOptions|See the type declarations below|[Optional parameter format](#optional-parameter-format)
+| Plugin Options Type | Description                     | Example                                                 |
+| :------------------ | :------------------------------ | :------------------------------------------------------ |
+| string              | The banner content              | [Basic usage](#basic-usage)                             |
+| BannerPluginOptions | See the type declarations below | [Optional parameter format](#optional-parameter-format) |
 
 · Type Declarations:
 
@@ -41,8 +41,20 @@ BannerPluginOptions|See the type declarations below|[Optional parameter format](
 export interface BannerPluginOptions {
   /**
    * The comment content of the banner
+   *
+   * @since 0.6.0
+   *
+   * callback function available since 0.6.0
+   * @example <caption>content Callback(since 0.6.0)</caption>
+   * ```ts
+   * content: (fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''
+   * // inject into js file, but not inject into css file
+   * // You can also continue to write other flows.
+   * ```
+   * @param fileName - The name of the file
+   * @returns {string | ContentCallback} What want to inject into the file. More details see {@link ContentCallback}
    */
-  content: string
+  content: string | ContentCallback
 
   /**
    * The output directory from the configuration of Vite.js
@@ -98,6 +110,28 @@ e.g. in `app.b3a7772e.js`:
 /* This is the banner content. */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
+
+### Add different banner by file name
+
+filename callbacks are supported since `0.6.0`. Return values of `null` or `""` means not injected, while string returns are injected.
+
+e.g.
+
+```ts
+// vite.config.ts
+import banner from 'vite-plugin-banner'
+// Other dependencies...
+
+export default defineConfig({
+  plugins: [
+    banner((fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''),
+  ]
+})
+```
+In this way, it will add the banner to the `.js` file, of course, it is convenient to customize the flow for different returns. Different banners can be added for different types of files (e.g. `css` and `js`), which may not be very useful for all users, but it is possible to package css, font, images etc. into a single css file at packaging time for tampermonkey + vue, which can be written via resource.
+
+The `connect` parameter is also supported.
+
 
 ### Advanced usage
 
