@@ -51,9 +51,9 @@ export interface BannerPluginOptions {
    * // 只注入js文件，不注入css文件，也可以继续写其他流程
    * ```
    * @param fileName - The name of the file
-   * @returns {string | contentCallback} What want to inject into the file. More details see {@link contentCallback}
+   * @returns {string | ContentCallback} What want to inject into the file. More details see {@link ContentCallback}
    */
-  content: string | contentCallback
+  content: string | ContentCallback
 
   /**
    * Vite.js 配置的输出目录
@@ -75,19 +75,6 @@ export interface BannerPluginOptions {
    * @default true
    */
   verify?: boolean
-
-  /**
-   * 排除指定的文件，支持字符串，正则表达式，和回调函数
-   * @example 例如：排除css文件
-   * - '.css'
-   * - /\.css/
-   * - (file) => file.endsWith('.css')
-   * @since 0.6.0
-   * @default undefined
-   * @param fileName - 文件名
-   * @returns 是否排除该文件。更多查阅 {@link excludeCallback}
-   */
-  exclude?: string | RegExp | ((fileName: string) => boolean)
 }
 ```
 
@@ -142,46 +129,6 @@ export default defineConfig({
 这样会在`.js`文件里添加 banner，当然可以自定义流程进行不同的返回。对于部分用户可能用处不大，但是对于 tampermonkey + vue 可以在打包时把css、font、图片等内容打包成css单文件，通过 resource 进行写入。
 
 `connect`参数同样也支持。
-
-此外，也可以通过配置`exclude`添加不同的 banner。
-
-例如：
-
-```ts
-// vite.config.ts
-import banner from 'vite-plugin-banner'
-// 其他依赖...
-
-export default defineConfig({
-  plugins: [
-    // 请记住在这里使用 Object 格式的选项
-    banner({
-      content: `这里会加载到js里`,
-      exclude: ".css",// 这里是【排除css文件】，因此实际上这里是加载到js中的
-    }),
-    banner({
-      content: `而这一行会加载到css里`,
-      exclude: ".js",// 这里是【排除js文件】，因此这里实际上是加载到css中的
-    }),
-  ],
-  // ...
-})
-```
-
-输出的文件：
-
-js 文件：
-```js
-/* 这里会加载到js里 */
-var e=Object.assign;import{M as t,d as a,u as r,c......
-```
-
-css 文件：
-```css
-/* 而这一行会加载到css里 */
-body{width:100%;padding:16px;margin-right......
-```
-显而易见，通过内容的回调会更简单并且清楚
 
 ### 高级用法
 

@@ -17,9 +17,9 @@ export interface BannerPluginOptions {
    * // You can also continue to write other flows.
    * ```
    * @param fileName - The name of the file
-   * @returns {string | contentCallback} What want to inject into the file. More details see {@link contentCallback}
+   * @returns {string | ContentCallback} What want to inject into the file. More details see {@link ContentCallback}
    */
-  content: string | contentCallback
+  content: string | ContentCallback
 
   /**
    * The output directory from the configuration of Vite.js
@@ -43,45 +43,17 @@ export interface BannerPluginOptions {
    * @default true
    */
   verify?: boolean
-
-  /**
-   * Exclude specified files.
-   *
-   * support `strings`, `RegExp`, and `function`.
-   * @example <caption>Exclude css files</caption>
-   * exclude: '.css'
-   * // or
-   * exclude: /\.css/
-   * // or
-   * exclude: (file) => file.endsWith('.css')
-   * @since 0.6.0
-   * @default undefined
-   * @param fileName - The file name
-   * @returns {boolean} Whether to exclude the file. See more: {@link excludeCallback}
-   */
-  exclude?: string | RegExp | excludeCallback
 }
 
 /**
  * Configuration of the plugin's internal runtime
  */
 export interface PluginConfig {
-  content: string | contentCallback
+  content: string | ContentCallback
   outDir: string
   debug: boolean
   verify: boolean
-  exclude: string | RegExp | excludeCallback | undefined
 }
-
-/** Callback function to exclude specified files
- * @param {string} fileName - current File name
- * @returns {boolean} Whether to exclude the file.
- *
- * `true`: exclude file;
- *
- * `false`: inject banner.
- */
-export type excludeCallback = (fileName: string) => boolean
 
 /** Callback function to get the contents to be injected.(or not inject)
  * @param {string} fileName - current File name
@@ -91,4 +63,4 @@ export type excludeCallback = (fileName: string) => boolean
  *
  * `string`: the string to inject.
  */
-export type contentCallback = (fileName: string) => string | null
+export type ContentCallback = (fileName: string) => string | null

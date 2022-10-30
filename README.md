@@ -52,9 +52,9 @@ export interface BannerPluginOptions {
    * // You can also continue to write other flows.
    * ```
    * @param fileName - The name of the file
-   * @returns {string | contentCallback} What want to inject into the file. More details see {@link contentCallback}
+   * @returns {string | ContentCallback} What want to inject into the file. More details see {@link ContentCallback}
    */
-  content: string | contentCallback
+  content: string | ContentCallback
 
   /**
    * The output directory from the configuration of Vite.js
@@ -77,19 +77,6 @@ export interface BannerPluginOptions {
    * @default `true`
    */
   verify?: boolean
-
-  /**
-   * Exclude specified files, supports string, RegExp and function.
-   * @example Exclude css files
-   * - '.css'
-   * - /\.css/
-   * - (file) => file.endsWith('.css')
-   * @since 0.6.0
-   * @default `undefined`
-   * @param fileName - The file name
-   * @returns Whether to exclude the file. See more: {@link excludeCallback}
-   */
-  exclude?: string | RegExp | ((fileName: string) => boolean)
 }
 ```
 
@@ -126,7 +113,7 @@ var e=Object.assign;import{M as t,d as a,u as r,c......
 
 ### Add different banner by file name
 
-filename callbacks are supported since `0.6.0`. Return values of `nul` or `""` means not injected, while string returns are injected.
+filename callbacks are supported since `0.6.0`. Return values of `null` or `""` means not injected, while string returns are injected.
 
 e.g.
 
@@ -145,48 +132,6 @@ In this way, it will add the banner to the `.js` file, of course, it is convenie
 
 The `connect` parameter is also supported.
 
-In addition, different banners can be added by configuring `exclude`.
-
-e.g.
-
-```ts
-// vite.config.ts
-import banner from 'vite-plugin-banner'
-// Other dependencies...
-
-export default defineConfig({
-  plugins: [
-    // Use Object format here
-    banner({
-      content: `This will be added into js file`,
-      exclude: ".css",// This is [exclude .css files],
-                      // so it is actually loaded into the js here
-    }),
-    banner({
-      content: `And this line will be added into css file`,
-      exclude: ".js",// Ditto.
-    }),
-  ],
-  // ...
-})
-```
-
-output file:
-
-js file:
-
-```js
-/* This will be added into js file */
-var e=Object.assign;import{M as t,d as a,u as r,c......
-```
-
-while css file:
-```css
-/* And this line will be added into css file */
-body{width:100%;padding:16px;margin-right......
-```
-
-Obviously, via content callback would be simpler and clearer.
 
 ### Advanced usage
 

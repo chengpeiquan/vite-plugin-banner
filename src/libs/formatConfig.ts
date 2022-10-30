@@ -1,7 +1,7 @@
 import verifyBanner from './verifyBanner'
 import type {
   BannerPluginOptions,
-  contentCallback,
+  ContentCallback,
   PluginConfig,
 } from '../types'
 
@@ -11,7 +11,7 @@ import type {
  * @returns A unified plugin option
  */
 export default function formatConfig(
-  options: string | BannerPluginOptions | contentCallback
+  options: string | BannerPluginOptions | ContentCallback
 ): PluginConfig {
   // Set a default config
   const config: PluginConfig = {
@@ -19,7 +19,6 @@ export default function formatConfig(
     outDir: 'dist',
     debug: false,
     verify: true,
-    exclude: undefined,
   }
 
   // Type of plugin options
@@ -66,22 +65,11 @@ export default function formatConfig(
     if (typeof options.verify === 'boolean') {
       config.verify = options.verify
     }
-
-    // Update the `exclude` option
-    if (
-      typeof options.exclude === 'string' ||
-      options.exclude instanceof RegExp ||
-      typeof options.exclude === 'function'
-    ) {
-      config.exclude = options.exclude
-    }
   }
   // No verification required
   if (!config.verify) return config
 
-  if (typeof config.content === 'function') {
-    return config
-  }
+  if (typeof config.content === 'function') return config
   // Verify the validity of the incoming comment content
   const errMsg: string = verifyBanner(config.content)
   if (errMsg) {
