@@ -28,7 +28,7 @@ English | [简体中文](https://github.com/chengpeiquan/vite-plugin-banner/blob
   - [Basic usage](#basic-usage)
   - [Advanced usage](#advanced-usage)
   - [Fun usage](#fun-usage)
-  - [Add different banner](#add-different-banner)
+  - [Add different banners](#add-different-banners)
   - [Optional parameter format](#optional-parameter-format)
 - [License](#license)
 
@@ -49,7 +49,7 @@ npm install -D vite-plugin-banner
 | Plugin Options Type | Description                     | Example                                                 |
 | :------------------ | :------------------------------ | :------------------------------------------------------ |
 | string              | The banner content              | [Basic usage](#basic-usage)                             |
-| ContentCallback     | See the type declarations below | [Add different banner](#add-different-banner)           |
+| ContentCallback     | See the type declarations below | [Add different banners](#add-different-banners)           |
 | BannerPluginOptions | See the type declarations below | [Optional parameter format](#optional-parameter-format) |
 
 · Type Declarations:
@@ -230,7 +230,7 @@ Run `npm run build`, e.g. in `app.d9a287b8.js`:
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
 
-### Add different banner
+### Add different banners
 
 Since `0.6.0`, it supports incoming function callback to set the content of Banner. When using `ContentCallback` type, this plugin will judge what content should be added according to the internal logic of the function.
 
