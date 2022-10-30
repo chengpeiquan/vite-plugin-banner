@@ -41,19 +41,30 @@ BannerPluginOptions|请参阅下方的类型声明|[可选参数格式](#可选�
 export interface BannerPluginOptions {
   /**
    * Banner 的注释内容
+   *
+   * @since 0.6.0
+   *
+   * 从 0.6.0 版本开始提供回调函数
+   * @example <caption>回调内容(从 0.6.0)</caption>
+   * ```ts
+   * content: (fileName: string) => fileName.endsWith('.js') ? '这条信息将注入到js文件中' : ''
+   * // 只注入js文件，不注入css文件，也可以继续写其他流程
+   * ```
+   * @param fileName - The name of the file
+   * @returns {string | ContentCallback} What want to inject into the file. More details see {@link ContentCallback}
    */
-  content: string
+  content: string | ContentCallback
 
   /**
    * Vite.js 配置的输出目录
-   * @default `dist`
+   * @default 'dist'
    */
   outDir?: string
 
   /**
    * 是否将错误信息打印到控制台
    * @since 0.4.0
-   * @default `false`
+   * @default false
    */
   debug?: boolean
 
@@ -61,7 +72,7 @@ export interface BannerPluginOptions {
    * 默认会验证内容的合法性，设置为 `false` 则不验证
    * @see https://github.com/chengpeiquan/vite-plugin-banner/issues/13
    * @since 0.5.0
-   * @default `true`
+   * @default true
    */
   verify?: boolean
 }
@@ -97,6 +108,27 @@ export default defineConfig({
 /* This is the banner content. */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
+
+### 针对文件名不同的 banner
+
+从`0.6.0`版本开始，支持文件名回调。返回值为`nul`或者`""`则不注入，返回字符串则进行注入。
+
+e.g.
+
+```ts
+// vite.config.ts
+import banner from 'vite-plugin-banner'
+// 其他依赖...
+
+export default defineConfig({
+  plugins: [
+    banner((fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''),
+  ]
+})
+```
+这样会在`.js`文件里添加 banner，当然可以自定义流程进行不同的返回。对于部分用户可能用处不大，但是对于 tampermonkey + vue 可以在打包时把css、font、图片等内容打包成css单文件，通过 resource 进行写入。
+
+`connect`参数同样也支持。
 
 ### 高级用法
 

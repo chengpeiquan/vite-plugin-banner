@@ -3,9 +3,17 @@ import { resolve } from 'path'
 import formatConfig from './libs/formatConfig'
 import type { ResolvedConfig } from 'vite'
 import type { NormalizedOutputOptions, OutputBundle } from 'rollup'
-import type { BannerPluginOptions, PluginConfig } from './types'
+import type {
+  BannerPluginOptions,
+  PluginConfig,
+  ContentCallback,
+} from './types'
 
-export type { BannerPluginOptions, PluginConfig } from './types'
+export type {
+  BannerPluginOptions,
+  PluginConfig,
+  ContentCallback,
+} from './types'
 
 // Extends the config from `vite.config.ts`
 let viteConfig: ResolvedConfig
@@ -20,7 +28,9 @@ const excludeRegexp: RegExp = new RegExp(/vendor/)
  * Add banner comments to files
  * @param pluginOptions - A comment content or An option
  */
-export default function (pluginOptions: string | BannerPluginOptions): any {
+export default function (
+  pluginOptions: string | BannerPluginOptions | ContentCallback
+): any {
   // Get the plugin config
   const pluginConfig: PluginConfig = formatConfig(pluginOptions)
 
@@ -41,6 +51,8 @@ export default function (pluginOptions: string | BannerPluginOptions): any {
           : file[0]
         const filePath: string = resolve(root, outDir, fileName)
 
+        const { content: setContent } = pluginConfig
+
         // Only handle matching files
         if (includeRegexp.test(fileName) && !excludeRegexp.test(fileName)) {
           try {
@@ -48,19 +60,20 @@ export default function (pluginOptions: string | BannerPluginOptions): any {
             let data: string = fs.readFileSync(filePath, {
               encoding: 'utf8',
             })
-
+            let myContent: string =
+              typeof setContent === 'string' ? setContent : ''
+            if (typeof setContent === 'function') {
+              myContent = setContent(fileName)
+              if (!myContent) return
+            }
             // If the banner content has comment symbol, use it directly
-            if (
-              pluginConfig.content.includes('/*') ||
-              pluginConfig.content.includes('*/')
-            ) {
-              data = `${pluginConfig.content}\n${data}`
+            if (myContent.includes('/*') || myContent.includes('*/')) {
+              data = `${myContent}\n${data}`
             }
             // Otherwise add comment symbol
             else {
-              data = `/*! ${pluginConfig.content} */\n${data}`
+              data = `/*! ${myContent} */\n${data}`
             }
-
             // Save
             fs.writeFileSync(filePath, data)
           } catch (e) {
