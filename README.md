@@ -6,17 +6,37 @@
   <a href='https://www.npmjs.com/package/vite-plugin-banner'>
     <img src="https://img.shields.io/npm/v/vite-plugin-banner?color=56b7ff&label=npm" />
   </a>
+  <a href="https://www.npmjs.com/package/vite-plugin-banner" target="__blank">
+    <img src="https://img.shields.io/npm/dm/vite-plugin-banner?color=56b7ff&label=" />
+  </a>
+  <a href="https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.md" target="__blank">
+    <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=56b7ff" />
+  </a>
+  <a href="https://github.com/chengpeiquan/vite-plugin-banner" target="__blank">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/chengpeiquan/vite-plugin-banner?style=social" />
+  </a>
 </p>
 <br>
 <br>
 
 English | [简体中文](https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.zh-CN.md)
 
+- [Features](#features)
+- [Installation](#installation)
+- [Options](#options)
+- [Usage](#usage)
+  - [Basic usage](#basic-usage)
+  - [Advanced usage](#advanced-usage)
+  - [Fun usage](#fun-usage)
+  - [Add different banner](#add-different-banner)
+  - [Optional parameter format](#optional-parameter-format)
+- [License](#license)
+
 ## Features
 
 Adds a banner to the top of each generated chunk.
 
-## Install
+## Installation
 
 Install the package from npm (or yarn, or pnpm).
 
@@ -29,11 +49,12 @@ npm install -D vite-plugin-banner
 | Plugin Options Type | Description                     | Example                                                 |
 | :------------------ | :------------------------------ | :------------------------------------------------------ |
 | string              | The banner content              | [Basic usage](#basic-usage)                             |
+| ContentCallback     | See the type declarations below | [Add different banner](#add-different-banner)           |
 | BannerPluginOptions | See the type declarations below | [Optional parameter format](#optional-parameter-format) |
 
 · Type Declarations:
 
-```ts
+````ts
 /**
  * Some options from `vite.config.[ts|js]`
  * @since 0.2.0
@@ -41,50 +62,59 @@ npm install -D vite-plugin-banner
 export interface BannerPluginOptions {
   /**
    * The comment content of the banner
-   *
-   * @since 0.6.0
-   *
-   * callback function available since 0.6.0
-   * @example <caption>content Callback(since 0.6.0)</caption>
-   * ```ts
-   * content: (fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''
-   * // inject into js file, but not inject into css file
-   * // You can also continue to write other flows.
-   * ```
-   * @param fileName - The name of the file
-   * @returns {string | ContentCallback} What want to inject into the file. More details see {@link ContentCallback}
+   * @since ^0.6.0 support for `ContentCallback` types
    */
   content: string | ContentCallback
 
   /**
    * The output directory from the configuration of Vite.js
-   * @default `dist`
+   * @default 'dist'
    */
   outDir?: string
 
   /**
    * Whether to print error messages to the console
    * @since 0.4.0
-   * @default `false`
+   * @default false
    */
   debug?: boolean
 
   /**
    * By default, the validity of the content will be verified.
+   *
    * If set to `false`, no verification will be performed.
    * @see https://github.com/chengpeiquan/vite-plugin-banner/issues/13
    * @since 0.5.0
-   * @default `true`
+   * @default true
    */
   verify?: boolean
 }
-```
+
+/**
+ * Callback function to get the contents to be injected.(or not inject)
+ * @since 0.6.0
+ *
+ * @param fileName - The name of the file currently being processed
+ * @returns
+ *  1. When a valid string is returned, it will become the banner content
+ *  2. Returning a Falsy value will skip processing(e.g. `''`, `null`, `undefined`)
+ *
+ * @example
+ * ```ts
+ *  content: (fileName: string) => {
+ *    // Or use switch statement
+ *    return fileName.endsWith('.js')
+ *      ? 'This message will inject into `js` files.'
+ *      : 'This message will inject into other files.'
+ *  }
+ * ```
+ */
+export type ContentCallback = (fileName: string) => string | null | undefined
+````
 
 ## Usage
 
-In most cases, just use the `String` format as a plugin option.
-
-In some special cases, such as in [VitePress](https://vitepress.vuejs.org/), you might need to use `Object` format to pass in plugin options, see [Optional parameter format](#optional-parameter-format).
+In most cases, just use the `string` format as a plugin option.
 
 ### Basic usage
 
@@ -96,9 +126,7 @@ import banner from 'vite-plugin-banner'
 // Other dependencies...
 
 export default defineConfig({
-  plugins: [
-    banner('This is the banner content.'),
-  ]
+  plugins: [banner('This is the banner content.')],
 })
 ```
 
@@ -110,28 +138,6 @@ e.g. in `app.b3a7772e.js`:
 /* This is the banner content. */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
-
-### Add different banner by file name
-
-filename callbacks are supported since `0.6.0`. Return values of `null` or `""` means not injected, while string returns are injected.
-
-e.g.
-
-```ts
-// vite.config.ts
-import banner from 'vite-plugin-banner'
-// Other dependencies...
-
-export default defineConfig({
-  plugins: [
-    banner((fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''),
-  ]
-})
-```
-In this way, it will add the banner to the `.js` file, of course, it is convenient to customize the flow for different returns. Different banners can be added for different types of files (e.g. `css` and `js`), which may not be very useful for all users, but it is possible to package css, font, images etc. into a single css file at packaging time for tampermonkey + vue, which can be written via resource.
-
-The `connect` parameter is also supported.
-
 
 ### Advanced usage
 
@@ -158,8 +164,10 @@ import pkg from './package.json'
 
 export default defineConfig({
   plugins: [
-    banner(`/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`),
-  ]
+    banner(
+      `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`
+    ),
+  ],
 })
 ```
 
@@ -201,30 +209,58 @@ export default defineConfig({
     ░██  ░██      ░░██     ██   ░░████   ░██           ░██   ░░██     ██ ░██    ░██
     ░██  ░████████ ░░███████     ░░██    ░████████     ░██    ░░███████  ░░███████ 
     ░░   ░░░░░░░░   ░░░░░░░       ░░     ░░░░░░░░      ░░      ░░░░░░░    ░░░░░░░  
-    `)
-  ]
+    `),
+  ],
 })
 ```
 
-Run `npm run build`,  e.g. in `app.d9a287b8.js`:
+Run `npm run build`, e.g. in `app.d9a287b8.js`:
 
 ```js
-/* 
+/*
     ██   ██         ███████   ██      ██ ████████   ██    ██   ███████   ██     ██
     ░██  ░██        ██░░░░░██ ░██     ░██░██░░░░░   ░░██  ██   ██░░░░░██ ░██    ░██
     ░██  ░██       ██     ░░██░██     ░██░██         ░░████   ██     ░░██░██    ░██
     ░██  ░██      ░██      ░██░░██    ██ ░███████     ░░██   ░██      ░██░██    ░██
     ░██  ░██      ░██      ░██ ░░██  ██  ░██░░░░       ░██   ░██      ░██░██    ░██
     ░██  ░██      ░░██     ██   ░░████   ░██           ░██   ░░██     ██ ░██    ░██
-    ░██  ░████████ ░░███████     ░░██    ░████████     ░██    ░░███████  ░░███████ 
-    ░░   ░░░░░░░░   ░░░░░░░       ░░     ░░░░░░░░      ░░      ░░░░░░░    ░░░░░░░  
+    ░██  ░████████ ░░███████     ░░██    ░████████     ░██    ░░███████  ░░███████
+    ░░   ░░░░░░░░   ░░░░░░░       ░░     ░░░░░░░░      ░░      ░░░░░░░    ░░░░░░░
      */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
 
+### Add different banner
+
+Since `0.6.0`, it supports incoming function callback to set the content of Banner. When using `ContentCallback` type, this plugin will judge what content should be added according to the internal logic of the function.
+
+1. When a valid string is returned, it will become the banner content
+2. Returning a [Falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy) value will skip processing(e.g. `''`, `null`, `undefined`)
+
+e.g.
+
+```ts
+// vite.config.ts
+import banner from 'vite-plugin-banner'
+// Other dependencies...
+
+export default defineConfig({
+  plugins: [
+    banner((fileName: string) => {
+      // Or use switch statement
+      return fileName.endsWith('.js')
+        ? 'This message will inject into `js` files.'
+        : 'This message will inject into other files.'
+    }),
+  ],
+})
+```
+
 ### Optional parameter format
 
-I'm not sure what other scenarios besides VitePress need to use this method to pass in options, so I use VitePress as an example, I hope it can give you a reference.
+Sometimes plugins can't get `outDir` successfully (for example, in VitePress, the plugin get through `viteConfig.build.outDir` is always a `.temp` temporary directory, not the final output directory), so you need to manually specify the output directory to inform the plugin.
+
+Take VitePress as an example:
 
 ```ts
 // docs/.vitepress/config.ts
@@ -252,11 +288,7 @@ export default defineConfig({
 })
 ```
 
-Why do it?
-
-Because in VitePress, what you get through `viteConfig.build.outDir` is always a `.temp` temporary directory, not the final output directory, so you need to manually specify the output directory to inform the plugin.
-
-Of course, with the updated version of Vitepress, this is not necessarily required, but you can choose to do so when you need it.
+In addition to `outDir`, you can also use `debug`, `verify` and other options, see the above [Options](#options) description for details.
 
 ## License
 

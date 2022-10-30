@@ -6,11 +6,31 @@
   <a href='https://www.npmjs.com/package/vite-plugin-banner'>
     <img src="https://img.shields.io/npm/v/vite-plugin-banner?color=56b7ff&label=npm" />
   </a>
+  <a href="https://www.npmjs.com/package/vite-plugin-banner" target="__blank">
+    <img src="https://img.shields.io/npm/dm/vite-plugin-banner?color=56b7ff&label=" />
+  </a>
+  <a href="https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.zh-CN.md" target="__blank">
+    <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=56b7ff" />
+  </a>
+  <a href="https://github.com/chengpeiquan/vite-plugin-banner" target="__blank">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/chengpeiquan/vite-plugin-banner?style=social" />
+  </a>
 </p>
 <br>
 <br>
 
 [English](https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.md) | 简体中文
+
+- [功能](#功能)
+- [安装](#安装)
+- [选项](#选项)
+- [用法](#用法)
+  - [基础用法](#基础用法)
+  - [高级用法](#高级用法)
+  - [趣味用法](#趣味用法)
+  - [添加不同的 Banner](#添加不同的-banner)
+  - [可选参数格式](#可选参数格式)
+- [License](#license)
 
 ## 功能
 
@@ -26,14 +46,15 @@ npm install --save-dev vite-plugin-banner
 
 ## 选项
 
-插件选项类型|作用描述|使用例子
-:--|:--|:--
-string|横幅注释的内容|[基础用法](#基础用法)
-BannerPluginOptions|请参阅下方的类型声明|[可选参数格式](#可选参数格式)
+| 插件选项类型        | 作用描述             | 使用例子                                |
+| :------------------ | :------------------- | :-------------------------------------- |
+| string              | 横幅注释的内容       | [基础用法](#基础用法)                   |
+| ContentCallback     | 请参阅下方的类型声明 | [添加不同的 Banner](#添加不同的-banner) |
+| BannerPluginOptions | 请参阅下方的类型声明 | [可选参数格式](#可选参数格式)           |
 
 · Type Declarations:
 
-```ts
+````ts
 /**
  * 来自 `vite.config.[ts|js]` 的一些选项
  * @since 0.2.0
@@ -41,17 +62,7 @@ BannerPluginOptions|请参阅下方的类型声明|[可选参数格式](#可选�
 export interface BannerPluginOptions {
   /**
    * Banner 的注释内容
-   *
-   * @since 0.6.0
-   *
-   * 从 0.6.0 版本开始提供回调函数
-   * @example <caption>回调内容(从 0.6.0)</caption>
-   * ```ts
-   * content: (fileName: string) => fileName.endsWith('.js') ? '这条信息将注入到js文件中' : ''
-   * // 只注入js文件，不注入css文件，也可以继续写其他流程
-   * ```
-   * @param fileName - The name of the file
-   * @returns {string | ContentCallback} What want to inject into the file. More details see {@link ContentCallback}
+   * @since 从 ^0.6.0 开始支持 `ContentCallback` 类型
    */
   content: string | ContentCallback
 
@@ -76,13 +87,32 @@ export interface BannerPluginOptions {
    */
   verify?: boolean
 }
-```
+
+/**
+ * 回调函数获取要注入的内容（或不注入）
+ * @since 0.6.0
+ *
+ * @param fileName - 当前正在处理的文件名称
+ * @returns
+ *  1. 返回有效字符串时，返回值将成为 Banner 的内容
+ *  2. 返回 Falsy 值将跳过处理（例如 `''`、`null`、`undefined` ）
+ *
+ * @example
+ * ```ts
+ *  content: (fileName: string) => {
+ *    // 或者使用 `switch` 语句
+ *    return fileName.endsWith('.js')
+ *      ? 'This message will inject into `js` files.'
+ *      : 'This message will inject into other files.'
+ *  }
+ * ```
+ */
+export type ContentCallback = (fileName: string) => string | null | undefined
+````
 
 ## 用法
 
-在大多数情况下，只需使用 `String` 格式作为插件选项。
-
-在一些特殊情况下，比如在 [VitePress](https://vitepress.vuejs.org/) 中，可能需要使用 `Object` 格式来传递插件选项，详见 [可选参数格式](#可选参数格式) 。
+在大多数情况下，只需使用 `string` 格式作为插件选项。
 
 ### 基础用法
 
@@ -94,9 +124,7 @@ import banner from 'vite-plugin-banner'
 // 其他依赖...
 
 export default defineConfig({
-  plugins: [
-    banner('This is the banner content.'),
-  ]
+  plugins: [banner('This is the banner content.')],
 })
 ```
 
@@ -108,27 +136,6 @@ export default defineConfig({
 /* This is the banner content. */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
-
-### 针对文件名不同的 banner
-
-从`0.6.0`版本开始，支持文件名回调。返回值为`nul`或者`""`则不注入，返回字符串则进行注入。
-
-e.g.
-
-```ts
-// vite.config.ts
-import banner from 'vite-plugin-banner'
-// 其他依赖...
-
-export default defineConfig({
-  plugins: [
-    banner((fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''),
-  ]
-})
-```
-这样会在`.js`文件里添加 banner，当然可以自定义流程进行不同的返回。对于部分用户可能用处不大，但是对于 tampermonkey + vue 可以在打包时把css、font、图片等内容打包成css单文件，通过 resource 进行写入。
-
-`connect`参数同样也支持。
 
 ### 高级用法
 
@@ -155,8 +162,10 @@ import pkg from './package.json'
 
 export default defineConfig({
   plugins: [
-    banner(`/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`),
-  ]
+    banner(
+      `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`
+    ),
+  ],
 })
 ```
 
@@ -198,30 +207,60 @@ export default defineConfig({
     ░██  ░██      ░░██     ██   ░░████   ░██           ░██   ░░██     ██ ░██    ░██
     ░██  ░████████ ░░███████     ░░██    ░████████     ░██    ░░███████  ░░███████ 
     ░░   ░░░░░░░░   ░░░░░░░       ░░     ░░░░░░░░      ░░      ░░░░░░░    ░░░░░░░  
-    `)
-  ]
+    `),
+  ],
 })
 ```
 
-执行 `npm run build` 打包,  还是在 `app.d9a287b8.js` ，现在变成了：
+执行 `npm run build` 打包, 还是在 `app.d9a287b8.js` ，现在变成了：
 
 ```js
-/* 
+/*
     ██   ██         ███████   ██      ██ ████████   ██    ██   ███████   ██     ██
     ░██  ░██        ██░░░░░██ ░██     ░██░██░░░░░   ░░██  ██   ██░░░░░██ ░██    ░██
     ░██  ░██       ██     ░░██░██     ░██░██         ░░████   ██     ░░██░██    ░██
     ░██  ░██      ░██      ░██░░██    ██ ░███████     ░░██   ░██      ░██░██    ░██
     ░██  ░██      ░██      ░██ ░░██  ██  ░██░░░░       ░██   ░██      ░██░██    ░██
     ░██  ░██      ░░██     ██   ░░████   ░██           ░██   ░░██     ██ ░██    ░██
-    ░██  ░████████ ░░███████     ░░██    ░████████     ░██    ░░███████  ░░███████ 
-    ░░   ░░░░░░░░   ░░░░░░░       ░░     ░░░░░░░░      ░░      ░░░░░░░    ░░░░░░░  
+    ░██  ░████████ ░░███████     ░░██    ░████████     ░██    ░░███████  ░░███████
+    ░░   ░░░░░░░░   ░░░░░░░       ░░     ░░░░░░░░      ░░      ░░░░░░░    ░░░░░░░
      */
 var e=Object.assign;import{M as t,d as a,u as r,c......
 ```
 
+### 添加不同的 Banner
+
+从 `0.6.0` 开始支持传入函数回调设置 Banner 的内容，当使用 `ContentCallback` 类型时，本插件会根据该函数的内部逻辑判断应该添加什么内容。
+
+1. 返回有效字符串时，返回值将成为 Banner 的内容
+2. 返回 [Falsy](https://developer.mozilla.org/zh-CN/docs/Glossary/Falsy) 值将跳过处理（例如 `''`、`null`、`undefined` ）
+
+以判断文件扩展名添加两个不同的 Banner 内容为例：
+
+e.g.
+
+```ts
+// vite.config.ts
+import banner from 'vite-plugin-banner'
+// 其他依赖...
+
+export default defineConfig({
+  plugins: [
+    banner((fileName: string) => {
+      // 或者使用 `switch` 语句
+      return fileName.endsWith('.js')
+        ? 'This message will inject into `js` files.'
+        : 'This message will inject into other files.'
+    }),
+  ],
+})
+```
+
 ### 可选参数格式
 
-我不确定除了 VitePress 还有哪些场景需要用到这种方式来传入选项，所以我用 VitePress 来举例，希望能给到你参考。
+有时候插件无法成功获取到 `outDir` （例如在 VitePress 里，插件通过 `viteConfig.build.outDir` 拿到的永远是一个 `.temp` 的临时目录，不是最终的输出目录），所以需要手动指定输出目录来告知插件。
+
+以 VitePress 举例：
 
 ```ts
 // docs/.vitepress/config.ts
@@ -249,11 +288,7 @@ export default defineConfig({
 })
 ```
 
-为什么要这么做？
-
-因为在 VitePress 里，通过 viteConfig.build.outDir 拿到的永远是一个 `.temp` 的临时目录，不是最终的输出目录，所以你需要手动指定输出目录来告知插件。
-
-当然，随着 Vitepress 的版本更新，不一定需要这么做，只是当你需要的时候，可以选择这么处理。
+除了 `outDir` ，还可以使用 `debug` 、 `verify` 等选项，详见上方的 [选项](#选项) 说明。
 
 ## License
 

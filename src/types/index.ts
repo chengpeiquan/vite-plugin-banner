@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+
 /**
  * Some options from `vite.config.[ts|js]`
  * @since 0.2.0
@@ -6,18 +7,7 @@
 export interface BannerPluginOptions {
   /**
    * The comment content of the banner
-   *
-   * @since 0.6.0
-   *
-   * callback function available since 0.6.0
-   * @example <caption>content Callback(since 0.6.0)</caption>
-   * ```ts
-   * content: (fileName: string) => fileName.endsWith('.js') ? 'this message will inject into js file' : ''
-   * // inject into js file, but not inject into css file
-   * // You can also continue to write other flows.
-   * ```
-   * @param fileName - The name of the file
-   * @returns {string | ContentCallback} What want to inject into the file. More details see {@link ContentCallback}
+   * @since ^0.6.0 support for `ContentCallback` types
    */
   content: string | ContentCallback
 
@@ -55,12 +45,23 @@ export interface PluginConfig {
   verify: boolean
 }
 
-/** Callback function to get the contents to be injected.(or not inject)
- * @param {string} fileName - current File name
- * @returns {string | null} What to inject into the file.
+/**
+ * Callback function to get the contents to be injected.(or not inject)
+ * @since 0.6.0
  *
- * `null` or `""`: do not inject anything.
+ * @param fileName - The name of the file currently being processed
+ * @returns
+ *  1. When a valid string is returned, it will become the banner content
+ *  2. Returning a Falsy value will skip processing(e.g. `''`, `null`, `undefined`)
  *
- * `string`: the string to inject.
+ * @example
+ * ```ts
+ *  content: (fileName: string) => {
+ *    // Or use switch statement
+ *    return fileName.endsWith('.js')
+ *      ? 'This message will inject into `js` files.'
+ *      : 'This message will inject into other files.'
+ *  }
+ * ```
  */
-export type ContentCallback = (fileName: string) => string | null
+export type ContentCallback = (fileName: string) => string | null | undefined
