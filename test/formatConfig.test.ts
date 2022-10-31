@@ -1,5 +1,11 @@
 import formatConfig from '../src/libs/formatConfig'
 
+function callback(fileName: string) {
+  return fileName.endsWith('.js')
+    ? 'This message will inject into `js` files.'
+    : 'This message will inject into other files.'
+}
+
 describe('formatConfig.ts', () => {
   test('Illegal options type', () => {
     expect(() => {
@@ -38,18 +44,21 @@ describe('formatConfig.ts', () => {
 })
 
 describe('formatConfig.ts', () => {
-  test('Illegal options type', () => {
-    function callback(fileName: string) {
-      return fileName.endsWith('.js')
-        ? 'This message will inject into `js` files.'
-        : 'This message will inject into other files.'
-    }
+  test('Functional content', () => {
+    expect(formatConfig(callback)).toStrictEqual({
+      content: callback,
+      outDir: 'dist',
+      debug: false,
+      verify: true,
+    })
+  })
+})
 
-    expect(() => {
-      formatConfig(callback)
-    }).toStrictEqual({
-      content: expect.any(Function),
-      outDir: '',
+describe('formatConfig.ts', () => {
+  test('The `content` option use `function` type', () => {
+    expect(formatConfig(callback)).toStrictEqual({
+      content: callback,
+      outDir: 'dist',
       debug: false,
       verify: true,
     })
