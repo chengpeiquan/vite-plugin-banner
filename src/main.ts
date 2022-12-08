@@ -60,20 +60,27 @@ export default function (
             let data: string = fs.readFileSync(filePath, {
               encoding: 'utf8',
             })
+
             let myContent: string =
               typeof setContent === 'string' ? setContent : ''
             if (typeof setContent === 'function') {
               myContent = setContent(fileName)
               if (!myContent) return
             }
+
             // If the banner content has comment symbol, use it directly
-            if (myContent.includes('/*') || myContent.includes('*/')) {
+            if (
+              myContent.includes('/*') ||
+              myContent.includes('*/') ||
+              !pluginConfig.verify
+            ) {
               data = `${myContent}\n${data}`
             }
             // Otherwise add comment symbol
             else {
               data = `/*! ${myContent} */\n${data}`
             }
+
             // Save
             fs.writeFileSync(filePath, data)
           } catch (e) {
