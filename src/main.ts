@@ -65,22 +65,21 @@ export default function (
               typeof setContent === 'string' ? setContent : ''
             if (typeof setContent === 'function') {
               myContent = setContent(fileName)
-              if (!myContent) return
             }
-
-            // If the banner content has comment symbol, use it directly
-            if (
-              myContent.includes('/*') ||
-              myContent.includes('*/') ||
-              !pluginConfig.verify
-            ) {
-              data = `${myContent}\n${data}`
+            if (myContent) {
+              // If the banner content has comment symbol, use it directly
+              if (
+                myContent.includes('/*') ||
+                myContent.includes('*/') ||
+                !pluginConfig.verify
+              ) {
+                data = `${myContent}\n${data}`
+              }
+              // Otherwise add comment symbol
+              else {
+                data = `/*! ${myContent} */\n${data}`
+              }
             }
-            // Otherwise add comment symbol
-            else {
-              data = `/*! ${myContent} */\n${data}`
-            }
-
             // Save
             fs.writeFileSync(filePath, data)
           } catch (e) {
