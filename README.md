@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/npm/v/vite-plugin-banner?color=56b7ff&label=npm" />
   </a>
   <a href="https://www.npmjs.com/package/vite-plugin-banner" target="__blank">
-    <img src="https://img.shields.io/npm/dm/vite-plugin-banner?color=56b7ff&label=" />
+    <img src="https://img.shields.io/npm/dt/vite-plugin-banner?color=56b7ff&label=" />
   </a>
   <a href="https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.md" target="__blank">
     <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=56b7ff" />
@@ -49,7 +49,7 @@ npm install -D vite-plugin-banner
 | Plugin Options Type | Description                     | Example                                                 |
 | :------------------ | :------------------------------ | :------------------------------------------------------ |
 | string              | The banner content              | [Basic usage](#basic-usage)                             |
-| ContentCallback     | See the type declarations below | [Add different banners](#add-different-banners)           |
+| ContentCallback     | See the type declarations below | [Add different banners](#add-different-banners)         |
 | BannerPluginOptions | See the type declarations below | [Optional parameter format](#optional-parameter-format) |
 
 · Type Declarations:
@@ -62,19 +62,25 @@ npm install -D vite-plugin-banner
 export interface BannerPluginOptions {
   /**
    * The comment content of the banner
+   *
    * @since ^0.6.0 support for `ContentCallback` types
    */
   content: string | ContentCallback
 
   /**
    * The output directory from the configuration of Vite.js
-   * @default 'dist'
+   *
+   * @see https://vitejs.dev/config/build-options.html#build-outdir
+   *
+   * @default viteConfig.build.outDir
    */
   outDir?: string
 
   /**
    * Whether to print error messages to the console
+   *
    * @since 0.4.0
+   *
    * @default false
    */
   debug?: boolean
@@ -83,8 +89,11 @@ export interface BannerPluginOptions {
    * By default, the validity of the content will be verified.
    *
    * If set to `false`, no verification will be performed.
+   *
    * @see https://github.com/chengpeiquan/vite-plugin-banner/issues/13
+   *
    * @since 0.5.0
+   *
    * @default true
    */
   verify?: boolean
@@ -92,14 +101,17 @@ export interface BannerPluginOptions {
 
 /**
  * Callback function to get the contents to be injected.(or not inject)
+ *
  * @since 0.6.0
  *
  * @param fileName - The name of the file currently being processed
+ *
  * @returns
  *  1. When a valid string is returned, it will become the banner content
  *  2. Returning a Falsy value will skip processing(e.g. `''`, `null`, `undefined`)
  *
  * @example
+ *
  * ```ts
  *  content: (fileName: string) => {
  *    // Or use switch statement
@@ -165,7 +177,7 @@ import pkg from './package.json'
 export default defineConfig({
   plugins: [
     banner(
-      `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`
+      `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`,
     ),
   ],
 })

@@ -1,3 +1,35 @@
-node_modules
+# log files
+yarn.lock
+package-lock.json
+examples/*/pnpm-lock.yaml
+
+# build output
 dist
-pnpm-lock.yaml
+lib
+
+# generated types
+.astro
+
+# dependencies
+node_modules
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# others
+.nyc_output
+demo
+*.rar
+*.zip
