@@ -1,18 +1,17 @@
 {
+  "extends": "@bassist/tsconfig/base.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "preserveConstEnums": true,
-    "moduleResolution": "node",
-    "types": ["node", "jest"],
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@m/*": ["src/modules/*"]
-    }
+      "@/*": ["./src/*"]
+    },
+    "types": ["node", "jest"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "declaration": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

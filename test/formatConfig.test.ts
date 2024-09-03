@@ -1,4 +1,4 @@
-import formatConfig from '../src/libs/formatConfig'
+import { getPluginConfig } from '../src/utils'
 
 function callback(fileName: string) {
   return fileName.endsWith('.js')
@@ -6,20 +6,20 @@ function callback(fileName: string) {
     : 'This message will inject into other files.'
 }
 
-describe('formatConfig.ts', () => {
+describe('getPluginConfig.ts', () => {
   test('Illegal options type', () => {
     expect(() => {
-      formatConfig(undefined as any)
+      getPluginConfig(undefined as any)
     }).toThrow(
-      '[vite-plugin-banner] The options must be a string, an object or a function.'
+      '[vite-plugin-banner] The options must be a string, an object or a function.',
     )
   })
 })
 
-describe('formatConfig.ts', () => {
+describe('getPluginConfig.ts', () => {
   test('Empty content', () => {
     expect(() => {
-      formatConfig({
+      getPluginConfig({
         content: '',
         outDir: '',
       })
@@ -27,13 +27,13 @@ describe('formatConfig.ts', () => {
   })
 })
 
-describe('formatConfig.ts', () => {
+describe('getPluginConfig.ts', () => {
   test('Valid options type', () => {
     expect(
-      formatConfig({
+      getPluginConfig({
         content: 'Hello World',
         outDir: '',
-      })
+      }),
     ).toStrictEqual({
       content: 'Hello World',
       outDir: '',
@@ -43,9 +43,9 @@ describe('formatConfig.ts', () => {
   })
 })
 
-describe('formatConfig.ts', () => {
+describe('getPluginConfig.ts', () => {
   test('Functional content', () => {
-    expect(formatConfig(callback)).toStrictEqual({
+    expect(getPluginConfig(callback)).toStrictEqual({
       content: callback,
       outDir: 'dist',
       debug: false,
@@ -54,9 +54,9 @@ describe('formatConfig.ts', () => {
   })
 })
 
-describe('formatConfig.ts', () => {
+describe('getPluginConfig.ts', () => {
   test('The `content` option use `function` type', () => {
-    expect(formatConfig(callback)).toStrictEqual({
+    expect(getPluginConfig(callback)).toStrictEqual({
       content: callback,
       outDir: 'dist',
       debug: false,

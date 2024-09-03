@@ -1,4 +1,4 @@
-import verifyBanner from '../src/libs/verifyBanner'
+import { verifyBanner } from '../src/utils'
 
 describe('verifyBanner.ts', () => {
   test('Valid content', () => {
@@ -15,7 +15,7 @@ describe('verifyBanner.ts', () => {
 describe('verifyBanner.ts', () => {
   test('Illegal content type', () => {
     expect(verifyBanner(null as any)).toBe(
-      'The banner content must be a string.'
+      'The banner content must be a string.',
     )
   })
 })
@@ -23,7 +23,7 @@ describe('verifyBanner.ts', () => {
 describe('verifyBanner.ts', () => {
   test('Illegal content type', () => {
     expect(verifyBanner(undefined as any)).toBe(
-      'The banner content must be a string.'
+      'The banner content must be a string.',
     )
   })
 })

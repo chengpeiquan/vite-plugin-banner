@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/npm/v/vite-plugin-banner?color=56b7ff&label=npm" />
   </a>
   <a href="https://www.npmjs.com/package/vite-plugin-banner" target="__blank">
-    <img src="https://img.shields.io/npm/dm/vite-plugin-banner?color=56b7ff&label=" />
+    <img src="https://img.shields.io/npm/dt/vite-plugin-banner?color=56b7ff&label=" />
   </a>
   <a href="https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.zh-CN.md" target="__blank">
     <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=56b7ff" />
@@ -57,32 +57,42 @@ npm install --save-dev vite-plugin-banner
 ````ts
 /**
  * 来自 `vite.config.[ts|js]` 的一些选项
+ *
  * @since 0.2.0
  */
 export interface BannerPluginOptions {
   /**
    * Banner 的注释内容
+   *
    * @since 从 ^0.6.0 开始支持 `ContentCallback` 类型
    */
   content: string | ContentCallback
 
   /**
    * Vite.js 配置的输出目录
-   * @default 'dist'
+   *
+   * @see https://cn.vitejs.dev/config/build-options#build-outdir
+   *
+   * @default viteConfig.build.outDir
    */
   outDir?: string
 
   /**
    * 是否将错误信息打印到控制台
+   *
    * @since 0.4.0
+   *
    * @default false
    */
   debug?: boolean
 
   /**
    * 默认会验证内容的合法性，设置为 `false` 则不验证
+   *
    * @see https://github.com/chengpeiquan/vite-plugin-banner/issues/13
+   *
    * @since 0.5.0
+   *
    * @default true
    */
   verify?: boolean
@@ -90,14 +100,17 @@ export interface BannerPluginOptions {
 
 /**
  * 回调函数获取要注入的内容（或不注入）
+ *
  * @since 0.6.0
  *
  * @param fileName - 当前正在处理的文件名称
+ *
  * @returns
  *  1. 返回有效字符串时，返回值将成为 Banner 的内容
  *  2. 返回 Falsy 值将跳过处理（例如 `''`、`null`、`undefined` ）
  *
  * @example
+ *
  * ```ts
  *  content: (fileName: string) => {
  *    // 或者使用 `switch` 语句
@@ -163,7 +176,7 @@ import pkg from './package.json'
 export default defineConfig({
   plugins: [
     banner(
-      `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`
+      `/**\n * name: ${pkg.name}\n * version: v${pkg.version}\n * description: ${pkg.description}\n * author: ${pkg.author}\n * homepage: ${pkg.homepage}\n */`,
     ),
   ],
 })
