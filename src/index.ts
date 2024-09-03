@@ -1,13 +1,11 @@
-import fs from 'fs'
-import { resolve } from 'path'
-import formatConfig from './libs/formatConfig'
-import type { ResolvedConfig } from 'vite'
-import type { NormalizedOutputOptions, OutputBundle } from 'rollup'
+import fs from 'node:fs'
+import { resolve } from 'node:path'
+import { getPluginConfig } from './utils'
 import type {
-  BannerPluginOptions,
-  PluginConfig,
-  ContentCallback,
-} from './types'
+  PluginOption as VitePluginOption,
+  ResolvedConfig as ViteResolvedConfig,
+} from 'vite'
+import type { PluginConfig, UnionPluginOptions } from './types'
 
 export type {
   BannerPluginOptions,
@@ -16,40 +14,41 @@ export type {
 } from './types'
 
 // Extends the config from `vite.config.ts`
-let viteConfig: ResolvedConfig
+let viteConfig: ViteResolvedConfig
 
 // File suffix that needs to be matched
-const includeRegexp: RegExp = new RegExp(/\.(css|[mc]?js)$/i)
+const includeRegexp = new RegExp(/\.(css|[mc]?js)$/i)
 
 // Filename to exclude
-const excludeRegexp: RegExp = new RegExp(/vendor/)
+const excludeRegexp = new RegExp(/vendor/)
 
 /**
  * Add banner comments to files
+ *
  * @param pluginOptions - A comment content or An option
  */
-export default function (
-  pluginOptions: string | BannerPluginOptions | ContentCallback
-): any {
+export default function (pluginOptions: UnionPluginOptions) {
   // Get the plugin config
-  const pluginConfig: PluginConfig = formatConfig(pluginOptions)
+  const pluginConfig: PluginConfig = getPluginConfig(pluginOptions)
 
   // Handle files
   return {
     name: 'banner',
-    configResolved(resolvedConfig: ResolvedConfig) {
+    apply: 'build',
+    configResolved(resolvedConfig) {
       viteConfig = resolvedConfig
     },
-    async writeBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
+    async writeBundle(_, bundle) {
       for (const file of Object.entries(bundle)) {
         // Get the full path of file
-        const root: string = viteConfig.root
-        const outDir: string =
-          pluginConfig.outDir || viteConfig.build.outDir || 'dist'
-        const fileName: string = file[0].endsWith('.js-lean')
+        const root = viteConfig.root
+        const outDir = pluginConfig.outDir || viteConfig.build.outDir
+
+        const fileName = file[0].endsWith('.js-lean')
           ? file[0].replace(/\.js-lean/, '.lean.js')
           : file[0]
-        const filePath: string = resolve(root, outDir, fileName)
+
+        const filePath = resolve(root, outDir, fileName)
 
         const { content: setContent } = pluginConfig
 
@@ -61,11 +60,12 @@ export default function (
               encoding: 'utf8',
             })
 
-            let myContent: string =
-              typeof setContent === 'string' ? setContent : ''
+            let myContent = typeof setContent === 'string' ? setContent : ''
+
             if (typeof setContent === 'function') {
-              myContent = setContent(fileName)
+              myContent = setContent(fileName) ?? ''
             }
+
             if (myContent) {
               // If the banner content has comment symbol, use it directly
               if (
@@ -91,5 +91,5 @@ export default function (
         }
       }
     },
-  }
+  } satisfies VitePluginOption
 }
