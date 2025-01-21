@@ -12,6 +12,6 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "declaration": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules"]
 }
