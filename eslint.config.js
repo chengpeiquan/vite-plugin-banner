@@ -1,16 +1,29 @@
 // @ts-check
-import { defineFlatConfig, js, typescript } from '@bassist/eslint'
+import {
+  createGetConfigNameFactory,
+  defineFlatConfig,
+  imports,
+  javascript,
+  node,
+  typescript,
+} from '@bassist/eslint-config'
+
+const getConfigName = createGetConfigNameFactory('banner')
 
 export default defineFlatConfig([
-  ...js,
+  ...javascript,
+  ...node,
+  ...imports,
   ...typescript,
   {
+    name: getConfigName('override'),
     rules: {
       'no-console': 'off',
       'require-await': 'off',
     },
   },
   {
+    name: getConfigName('ignore'),
     ignores: ['dist', 'lib', 'types', 'test'],
   },
 ])

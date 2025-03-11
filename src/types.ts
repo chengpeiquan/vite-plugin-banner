@@ -14,9 +14,8 @@ export interface BannerPluginOptions {
   /**
    * The output directory from the configuration of Vite.js
    *
-   * @see https://vitejs.dev/config/build-options.html#build-outdir
-   *
    * @default viteConfig.build.outDir
+   * @see https://vitejs.dev/config/build-options.html#build-outdir
    */
   outDir?: string
 
@@ -24,7 +23,6 @@ export interface BannerPluginOptions {
    * Whether to print error messages to the console
    *
    * @since 0.4.0
-   *
    * @default false
    */
   debug?: boolean
@@ -34,11 +32,9 @@ export interface BannerPluginOptions {
    *
    * If set to `false`, no verification will be performed.
    *
-   * @see https://github.com/chengpeiquan/vite-plugin-banner/issues/13
-   *
    * @since 0.5.0
-   *
    * @default true
+   * @see https://github.com/chengpeiquan/vite-plugin-banner/issues/13
    */
   verify?: boolean
 }
@@ -47,31 +43,27 @@ export interface BannerPluginOptions {
  * Callback function to get the contents to be injected.(or not inject)
  *
  * @since 0.6.0
+ * @example
+ *   ```ts
+ *   content: (fileName: string) => {
+ *   // Or use switch statement
+ *   return fileName.endsWith('.js')
+ *   ? 'This message will inject into `js` files.'
+ *   : 'This message will inject into other files.'
+ *   }
+ *   ```
  *
  * @param fileName - The name of the file currently being processed
- *
  * @returns
- *  1. When a valid string is returned, it will become the banner content
- *  2. Returning a Falsy value will skip processing(e.g. `''`, `null`, `undefined`)
  *
- * @example
- *
- * ```ts
- *  content: (fileName: string) => {
- *    // Or use switch statement
- *    return fileName.endsWith('.js')
- *      ? 'This message will inject into `js` files.'
- *      : 'This message will inject into other files.'
- *  }
- * ```
+ *   1. When a valid string is returned, it will become the banner content
+ *   2. Returning a Falsy value will skip processing(e.g. `''`, `null`, `undefined`)
  */
 export type ContentCallback = (fileName: string) => string | null | undefined
 
 export type UnionPluginOptions = string | BannerPluginOptions | ContentCallback
 
-/**
- * Configuration of the plugin's internal runtime
- */
+/** Configuration of the plugin's internal runtime */
 export interface PluginConfig {
   content: string | ContentCallback
   outDir: string
