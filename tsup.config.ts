@@ -1,9 +1,9 @@
-import { defineConfig } from 'tsup'
 import {
   BundleFormat,
   getBundleBanner,
   getBundleExtension,
 } from '@bassist/node-utils'
+import { defineConfig } from 'tsup'
 import pkg from './package.json'
 
 export default defineConfig({
