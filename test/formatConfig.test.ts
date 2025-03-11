@@ -47,7 +47,7 @@ describe('getPluginConfig.ts', () => {
   test('Functional content', () => {
     expect(getPluginConfig(callback)).toStrictEqual({
       content: callback,
-      outDir: 'dist',
+      outDir: '',
       debug: false,
       verify: true,
     })
@@ -58,7 +58,7 @@ describe('getPluginConfig.ts', () => {
   test('The `content` option use `function` type', () => {
     expect(getPluginConfig(callback)).toStrictEqual({
       content: callback,
-      outDir: 'dist',
+      outDir: '',
       debug: false,
       verify: true,
     })
