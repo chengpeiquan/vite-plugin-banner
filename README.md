@@ -21,17 +21,6 @@
 
 English | [简体中文](https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.zh-CN.md)
 
-- [Features](#features)
-- [Installation](#installation)
-- [Options](#options)
-- [Usage](#usage)
-  - [Basic usage](#basic-usage)
-  - [Advanced usage](#advanced-usage)
-  - [Fun usage](#fun-usage)
-  - [Add different banners](#add-different-banners)
-  - [Optional parameter format](#optional-parameter-format)
-- [License](#license)
-
 ## Features
 
 Adds a banner to the top of each generated chunk.
