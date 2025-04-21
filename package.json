@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-banner",
   "description": "A banner plugin for Vite. Adds a banner to the top of each generated chunk.",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "author": "chengpeiquan <chengpeiquan@chengpeiquan.com>",
   "type": "module",
   "license": "MIT",
