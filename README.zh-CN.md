@@ -21,17 +21,6 @@
 
 [English](https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.md) | 简体中文
 
-- [功能](#功能)
-- [安装](#安装)
-- [选项](#选项)
-- [用法](#用法)
-  - [基础用法](#基础用法)
-  - [高级用法](#高级用法)
-  - [趣味用法](#趣味用法)
-  - [添加不同的 Banner](#添加不同的-banner)
-  - [可选参数格式](#可选参数格式)
-- [License](#license)
-
 ## 功能
 
 为每个 chunk 文件头部添加 banner 注释。

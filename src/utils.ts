@@ -4,8 +4,7 @@ import type { PluginConfig, UnionPluginOptions } from './types'
  * Verify the banner content
  *
  * @param content - The content of banner
- *
- * @return The error message, when success, if will be a empty string
+ * @returns The error message, when success, if will be a empty string
  */
 export const verifyBanner = (content: string): string => {
   // illegal type
@@ -34,7 +33,6 @@ export const verifyBanner = (content: string): string => {
  * Process options of different formats into a unified format
  *
  * @param options - Some options from `vite.config.[ts|js]`
- *
  * @returns A unified plugin option
  */
 export const getPluginConfig = (options: UnionPluginOptions): PluginConfig => {

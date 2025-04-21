@@ -1,11 +1,11 @@
 import fs from 'node:fs'
 import { resolve } from 'node:path'
 import { getPluginConfig } from './utils'
+import type { PluginConfig, UnionPluginOptions } from './types'
 import type {
   PluginOption as VitePluginOption,
   ResolvedConfig as ViteResolvedConfig,
 } from 'vite'
-import type { PluginConfig, UnionPluginOptions } from './types'
 
 export type {
   BannerPluginOptions,
