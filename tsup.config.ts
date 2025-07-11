@@ -1,23 +1,7 @@
-import {
-  BundleFormat,
-  getBundleBanner,
-  getBundleExtension,
-} from '@bassist/node-utils'
+import { createBaseConfig } from '@bassist/build-config/tsup'
 import { defineConfig } from 'tsup'
 import pkg from './package.json'
 
-export default defineConfig({
-  entry: ['src/index.ts'],
-  target: ['es2020'],
-  format: [BundleFormat.CJS, BundleFormat.ESM],
-  globalName: 'Banner',
-  outExtension: (ctx) => getBundleExtension(ctx),
-  outDir: 'dist',
-  dts: true,
-  banner: {
-    js: getBundleBanner(pkg),
-  },
-  bundle: true,
-  minify: true,
-  clean: true,
-})
+const config = createBaseConfig({ pkg })
+
+export default defineConfig(config)

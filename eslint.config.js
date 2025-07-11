@@ -15,6 +15,7 @@ export default defineFlatConfig([
   ...node,
   ...imports,
   ...typescript,
+
   {
     name: getConfigName('override'),
     rules: {
@@ -22,6 +23,7 @@ export default defineFlatConfig([
       'require-await': 'off',
     },
   },
+
   {
     name: getConfigName('ignore'),
     ignores: ['dist', 'lib', 'types', 'test'],

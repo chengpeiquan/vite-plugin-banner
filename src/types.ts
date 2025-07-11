@@ -63,7 +63,9 @@ export type ContentCallback = (fileName: string) => string | null | undefined
 
 export type UnionPluginOptions = string | BannerPluginOptions | ContentCallback
 
-/** Configuration of the plugin's internal runtime */
+/**
+ * Configuration of the plugin's internal runtime
+ */
 export interface PluginConfig {
   content: string | ContentCallback
   outDir: string
