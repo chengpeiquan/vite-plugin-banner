@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/npm/v/vite-plugin-banner?color=56b7ff&label=npm" />
   </a>
   <a href="https://www.npmjs.com/package/vite-plugin-banner" target="__blank">
-    <img src="https://img.shields.io/npm/dt/vite-plugin-banner?color=56b7ff&label=" />
+    <img src="https://img.shields.io/npm/dy/vite-plugin-banner?color=56b7ff&label=downloads" />
   </a>
   <a href="https://github.com/chengpeiquan/vite-plugin-banner/blob/main/README.zh-CN.md" target="__blank">
     <img src="https://img.shields.io/static/v1?label=&message=docs%20%26%20demos&color=56b7ff" />
